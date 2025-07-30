@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "candles=1,lit=false,waterlogged=true": [
+      {"model": "minecraft:block/hs/brown1"}
+    ],
+    "candles=2,lit=false,waterlogged=true": [
+      {"model": "minecraft:block/hs/brown1", "y": 90}
+  ],
+    "candles=3,lit=false,waterlogged=true": [
+      {"model": "minecraft:block/hs/brown2"}
+  ],
+    "candles=4,lit=false,waterlogged=true": [
+      {"model": "minecraft:block/hs/brown2", "y": 90}
+    ]
+  }
+}

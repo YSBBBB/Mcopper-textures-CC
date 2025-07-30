@@ -1,0 +1,83 @@
+{
+	"credit": "Made by YSBB with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "block/lz/book1",
+		"1": "block/lz/book2",
+		"particle": "block/lz/book1"
+	},
+	"elements": [
+		{
+			"from": [5, 1, 4],
+			"to": [13, 3, 14],
+			"faces": {
+				"north": {"uv": [8, 11, 16, 14], "texture": "#1"},
+				"east": {"uv": [0, 12, 10, 15], "texture": "#1"},
+				"south": {"uv": [0, 11, 8, 14], "texture": "#1"},
+				"west": {"uv": [4, 12, 14, 15], "texture": "#1"}
+			}
+		},
+		{
+			"from": [5, 3, 3.5],
+			"to": [13.5, 4, 14.5],
+			"faces": {
+				"north": {"uv": [16, 0, 12, 0.5], "texture": "#0"},
+				"east": {"uv": [15.5, 0, 16, 5], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [12, 4.5, 16, 5], "texture": "#0"},
+				"west": {"uv": [11, 0, 11.5, 5], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [12, 0, 16, 5], "texture": "#0"},
+				"down": {"uv": [12, 0, 16, 5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [4, 1, 3.5],
+			"to": [5, 3, 14.5],
+			"faces": {
+				"north": {"uv": [10.5, 4.5, 10, 5], "rotation": 90, "texture": "#0"},
+				"east": {"uv": [10, 4.5, 10.5, 5], "texture": "#0"},
+				"south": {"uv": [10.5, 4.5, 10, 5], "rotation": 90, "texture": "#0"},
+				"west": {"uv": [10.5, 0, 9.5, 5], "rotation": 90, "texture": "#0"}
+			}
+		},
+		{
+			"from": [5, 0, 3.5],
+			"to": [13.5, 1, 14.5],
+			"faces": {
+				"north": {"uv": [16, 0, 12, 0.5], "texture": "#0"},
+				"east": {"uv": [15.5, 0, 16, 5], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [12, 4.5, 16, 5], "texture": "#0"},
+				"west": {"uv": [9.5, 0, 10, 5], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [12, 0, 16, 5], "texture": "#0"},
+				"down": {"uv": [12, 0, 16, 5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [4, 3, 3.5],
+			"to": [5, 4, 14.5],
+			"faces": {
+				"north": {"uv": [10, 4.5, 10.5, 5], "texture": "#0"},
+				"south": {"uv": [11, 0, 11.5, 0.5], "texture": "#0"},
+				"west": {"uv": [11, 0, 11.5, 5], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [9.5, 0, 10, 5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [4, 0, 3.5],
+			"to": [5, 1, 14.5],
+			"faces": {
+				"north": {"uv": [9.5, 0, 10, 0.5], "texture": "#0"},
+				"south": {"uv": [9.5, 0, 10, 0.5], "texture": "#0"},
+				"west": {"uv": [9.5, 0, 10, 5], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [9.5, 0, 10, 5], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "hui",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"children": [0, 1, 2, 3, 4, 5]
+		}
+	]
+}

@@ -1,0 +1,44 @@
+{
+  "variants": {
+    "candles=1,lit=false,waterlogged=true": [
+      {"model": "minecraft:block/hs/light_gray1", "y": 270},
+      {"model": "minecraft:block/hs/light_gray1", "y": 180},
+      {"model": "minecraft:block/hs/light_gray1", "y": 90},
+      {"model": "minecraft:block/hs/light_gray1"},
+      {"model": "minecraft:block/hs/light_gray11", "y": 270},
+      {"model": "minecraft:block/hs/light_gray11", "y": 180},
+      {"model": "minecraft:block/hs/light_gray11", "y": 90},
+      {"model": "minecraft:block/hs/light_gray11"}
+    ],
+    "candles=2,lit=false,waterlogged=true": [
+      {"model": "minecraft:block/hs/light_gray2"},
+      {"model": "minecraft:block/hs/light_gray2", "y": 270},
+      {"model": "minecraft:block/hs/light_gray2", "y": 180},
+      {"model": "minecraft:block/hs/light_gray2", "y": 90},
+      {"model": "minecraft:block/hs/light_gray22"},
+      {"model": "minecraft:block/hs/light_gray22", "y": 270},
+      {"model": "minecraft:block/hs/light_gray22", "y": 180},
+      {"model": "minecraft:block/hs/light_gray22", "y": 90}
+  ],
+    "candles=3,lit=false,waterlogged=true": [
+      {"model": "minecraft:block/hs/light_gray3"},
+      {"model": "minecraft:block/hs/light_gray3", "y": 270},
+      {"model": "minecraft:block/hs/light_gray3", "y": 180},
+      {"model": "minecraft:block/hs/light_gray3", "y": 90},
+      {"model": "minecraft:block/hs/light_gray33"},
+      {"model": "minecraft:block/hs/light_gray33", "y": 270},
+      {"model": "minecraft:block/hs/light_gray33", "y": 180},
+      {"model": "minecraft:block/hs/light_gray33", "y": 90}
+  ],
+    "candles=4,lit=false,waterlogged=true": [
+      {"model": "minecraft:block/hs/light_gray4"},
+      {"model": "minecraft:block/hs/light_gray4", "y": 270},
+      {"model": "minecraft:block/hs/light_gray4", "y": 180},
+      {"model": "minecraft:block/hs/light_gray4", "y": 90},
+      {"model": "minecraft:block/hs/light_gray44"},
+      {"model": "minecraft:block/hs/light_gray44", "y": 270},
+      {"model": "minecraft:block/hs/light_gray44", "y": 180},
+      {"model": "minecraft:block/hs/light_gray44", "y": 90}
+    ]
+  }
+}

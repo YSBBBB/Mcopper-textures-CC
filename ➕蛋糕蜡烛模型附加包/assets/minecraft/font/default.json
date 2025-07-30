@@ -1,0 +1,13 @@
+{
+    "providers": [
+        {
+            "type": "bitmap",
+            "file": "minecraft:font/dangao.png",
+            "height": 120,
+            "ascent": 120,
+            "chars": [
+                "\ud83c\udf41"
+            ]
+        }
+    ]    
+}

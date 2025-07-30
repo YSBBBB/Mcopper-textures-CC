@@ -1,0 +1,69 @@
+{
+	"credit": "Made by YSBB with Blockbench",
+	"textures": {
+		"0": "block/hs/heise",
+		"particle": "block/hs/heise"
+	},
+	"elements": [
+		{
+			"from": [4, 16, 11],
+			"to": [5, 16, 13],
+			"faces": {
+				"up": {"uv": [2, 12, 3, 14], "texture": "#0"}
+			}
+		},
+		{
+			"from": [5, 16, 10],
+			"to": [7, 16, 13],
+			"faces": {
+				"up": {"uv": [3, 11, 5, 14], "texture": "#0"}
+			}
+		},
+		{
+			"from": [3, 16, 3],
+			"to": [5, 16, 5],
+			"faces": {
+				"up": {"uv": [6, 7, 8, 9], "texture": "#0"}
+			}
+		},
+		{
+			"from": [12, 16, 9],
+			"to": [14, 16, 11],
+			"faces": {
+				"up": {"uv": [8, 7, 6, 9], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "group",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"nbt": "{}",
+			"children": []
+		},
+		{
+			"name": "group",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"nbt": "{}",
+			"children": [0, 1]
+		},
+		{
+			"name": "group",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"nbt": "{}",
+			"children": []
+		},
+		{
+			"name": "group",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"nbt": "{}",
+			"children": []
+		},
+		2,
+		3
+	]
+}

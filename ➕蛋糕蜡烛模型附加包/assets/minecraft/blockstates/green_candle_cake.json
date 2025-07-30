@@ -1,0 +1,17 @@
+{
+  "variants": {
+    "lit=false": [
+      {"model": "minecraft:block/lz/gp1","weight":1},
+      {"model": "minecraft:block/lz/gp2","weight":1},
+      {"model": "minecraft:block/lz/gp3","weight":1},
+      {"model": "minecraft:block/lz/gp4","weight":1},
+      {"model": "minecraft:block/lz/gp5","weight":1},
+      {"model": "minecraft:block/lz/gp6","weight":1},
+      {"model": "minecraft:block/lz/gp7","weight":1},
+      {"model": "minecraft:block/lz/gp8","weight":1}
+    ],
+    "lit=true": {
+      "model": "minecraft:block/green_candle_cake_lit"
+    }
+  }
+}

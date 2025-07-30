@@ -1,0 +1,45 @@
+{
+  "variants": {
+    "lit=false": [
+      {"model": "minecraft:block/lz/tangyu1","weight":8},
+      {"model": "minecraft:block/lz/tangyu1","weight":8,"y": 90},
+      {"model": "minecraft:block/lz/tangyu1","weight":8,"y": 180},
+      {"model": "minecraft:block/lz/tangyu1","weight":8,"y": 270},
+      {"model": "minecraft:block/lz/tangyu2","weight":8},
+      {"model": "minecraft:block/lz/tangyu2","weight":8,"y": 90},
+      {"model": "minecraft:block/lz/tangyu2","weight":8,"y": 180},
+      {"model": "minecraft:block/lz/tangyu2","weight":8,"y": 270},
+      {"model": "minecraft:block/lz/tangyu3","weight":8},
+      {"model": "minecraft:block/lz/tangyu3","weight":8,"y": 90},
+      {"model": "minecraft:block/lz/tangyu3","weight":8,"y": 180},
+      {"model": "minecraft:block/lz/tangyu3","weight":9,"y": 270},
+      {"model": "minecraft:block/lz/tangyu4","weight":8},
+      {"model": "minecraft:block/lz/tangyu4","weight":8,"y": 90},
+      {"model": "minecraft:block/lz/tangyu4","weight":8,"y": 180},
+      {"model": "minecraft:block/lz/tangyu4","weight":8,"y": 270},
+      {"model": "minecraft:block/lz/tang1","weight":10},
+      {"model": "minecraft:block/lz/tang1","weight":10,"y": 90},
+      {"model": "minecraft:block/lz/tang1","weight":10,"y": 180},
+      {"model": "minecraft:block/lz/tang1","weight":10,"y": 270},
+      {"model": "minecraft:block/lz/tang4","weight":10},
+      {"model": "minecraft:block/lz/tang4","weight":10,"y": 90},
+      {"model": "minecraft:block/lz/tang4","weight":10,"y": 180},
+      {"model": "minecraft:block/lz/tang4","weight":10,"y": 270},
+      {"model": "minecraft:block/lz/tang6","weight":10},
+      {"model": "minecraft:block/lz/tang6","weight":10,"y": 90},
+      {"model": "minecraft:block/lz/tang6","weight":10,"y": 180},
+      {"model": "minecraft:block/lz/tang6","weight":10,"y": 270},
+      {"model": "minecraft:block/lz/tang7","weight":10},
+      {"model": "minecraft:block/lz/tang7","weight":10,"y": 90},
+      {"model": "minecraft:block/lz/tang7","weight":10,"y": 180},
+      {"model": "minecraft:block/lz/tang7","weight":10,"y": 270},
+      {"model": "minecraft:block/lz/tang8","weight":10},
+      {"model": "minecraft:block/lz/tang8","weight":10,"y": 90},
+      {"model": "minecraft:block/lz/tang8","weight":10,"y": 180},
+      {"model": "minecraft:block/lz/tang8","weight":10,"y": 270}
+    ],
+    "lit=true": {
+      "model": "minecraft:block/cyan_candle_cake_lit"
+    }
+  }
+}

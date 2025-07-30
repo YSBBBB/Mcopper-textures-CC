@@ -1,0 +1,62 @@
+{
+  "variants": {
+    "candles=1,lit=false,waterlogged=true": [
+      {"model": "minecraft:block/hs/hs1"},
+      {"model": "minecraft:block/hs/hs1", "y": 90},
+      {"model": "minecraft:block/hs/hs1", "y": 180},
+      {"model": "minecraft:block/hs/hs1", "y": 270},
+      {"model": "minecraft:block/hs/hs2"},
+      {"model": "minecraft:block/hs/hs2", "y": 90},
+      {"model": "minecraft:block/hs/hs2", "y": 180},
+      {"model": "minecraft:block/hs/hs2", "y": 270},
+      {"model": "minecraft:block/hs/hs3"},
+      {"model": "minecraft:block/hs/hs3", "y": 90},
+      {"model": "minecraft:block/hs/hs3", "y": 180},
+      {"model": "minecraft:block/hs/hs3", "y": 270}
+    ],
+    "candles=2,lit=false,waterlogged=true": [
+      {"model": "minecraft:block/hs/hs11"},
+      {"model": "minecraft:block/hs/hs11", "y": 90},
+      {"model": "minecraft:block/hs/hs11", "y": 180},
+      {"model": "minecraft:block/hs/hs11", "y": 270},
+      {"model": "minecraft:block/hs/hs22"},
+      {"model": "minecraft:block/hs/hs22", "y": 90},
+      {"model": "minecraft:block/hs/hs22", "y": 180},
+      {"model": "minecraft:block/hs/hs22", "y": 270},
+      {"model": "minecraft:block/hs/hs33"},
+      {"model": "minecraft:block/hs/hs33", "y": 90},
+      {"model": "minecraft:block/hs/hs33", "y": 180},
+      {"model": "minecraft:block/hs/hs33", "y": 270}
+  ],
+    "candles=3,lit=false,waterlogged=true": [
+      {"model": "minecraft:block/hs/hs111"},
+      {"model": "minecraft:block/hs/hs111", "y": 90},
+      {"model": "minecraft:block/hs/hs111", "y": 180},
+      {"model": "minecraft:block/hs/hs111", "y": 270},
+      {"model": "minecraft:block/hs/hs222"},
+      {"model": "minecraft:block/hs/hs222", "y": 90},
+      {"model": "minecraft:block/hs/hs222", "y": 180},
+      {"model": "minecraft:block/hs/hs222", "y": 270},
+      {"model": "minecraft:block/hs/hs333"},
+      {"model": "minecraft:block/hs/hs333", "y": 90},
+      {"model": "minecraft:block/hs/hs333", "y": 180},
+      {"model": "minecraft:block/hs/hs333", "y": 270}
+  ],
+    "candles=4,lit=false,waterlogged=true": [
+      {"model": "minecraft:block/hs/hs1111"},
+      {"model": "minecraft:block/hs/hs1111", "y": 90},
+      {"model": "minecraft:block/hs/hs1111", "y": 180},
+      {"model": "minecraft:block/hs/hs1111", "y": 270},
+      {"model": "minecraft:block/hs/hs2222"},
+      {"model": "minecraft:block/hs/hs2222", "y": 90},
+      {"model": "minecraft:block/hs/hs2222", "y": 180},
+      {"model": "minecraft:block/hs/hs2222", "y": 270},
+      {"model": "minecraft:block/hs/hs3333"},
+      {"model": "minecraft:block/hs/hs3333", "y": 90},
+      {"model": "minecraft:block/hs/hs3333", "y": 180},
+      {"model": "minecraft:block/hs/hs3333", "y": 270}
+    ]
+  }
+}
+
+
