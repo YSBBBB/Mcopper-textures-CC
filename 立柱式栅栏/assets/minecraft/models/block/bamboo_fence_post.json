@@ -1,0 +1,22 @@
+{
+	"credit": "Made by YSBB with Blockbench",
+	"parent": "minecraft:block/fence_post",
+	"textures": {
+		"texture": "block/bamboo_block"
+	},
+	"elements": [
+		{
+			"name": "Center post",
+			"from": [6.5, 0, 6.5],
+			"to": [9.5, 16, 9.5],
+			"faces": {
+				"north": {"uv": [9, 0, 12, 16], "texture": "#texture"},
+				"east": {"uv": [9, 0, 12, 16], "texture": "#texture"},
+				"south": {"uv": [9, 0, 12, 16], "texture": "#texture"},
+				"west": {"uv": [9, 0, 12, 16], "texture": "#texture"},
+				"up": {"uv": [9, 6, 12, 9], "texture": "#texture", "cullface": "up"},
+				"down": {"uv": [9, 6, 12, 9], "texture": "#texture", "cullface": "down"}
+			}
+		}
+	]
+}

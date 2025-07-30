@@ -1,0 +1,23 @@
+{
+	"credit": "Made by YSBB with Blockbench",
+	"parent": "minecraft:block/fence_post",
+	"textures": {
+		"1": "block/crimson_stem",
+		"particle": "block/crimson_stem"
+	},
+	"elements": [
+		{
+			"name": "Center post",
+			"from": [6.5, 0, 6.5],
+			"to": [9.5, 16, 9.5],
+			"faces": {
+				"north": {"uv": [9, 0, 12, 16], "texture": "#1"},
+				"east": {"uv": [9, 0, 12, 16], "texture": "#1"},
+				"south": {"uv": [9, 0, 12, 16], "texture": "#1"},
+				"west": {"uv": [9, 0, 12, 16], "texture": "#1"},
+				"up": {"uv": [9, 6, 12, 9], "texture": "#1", "cullface": "up"},
+				"down": {"uv": [9, 6, 12, 9], "texture": "#1", "cullface": "down"}
+			}
+		}
+	]
+}

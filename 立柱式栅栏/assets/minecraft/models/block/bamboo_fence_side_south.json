@@ -1,0 +1,38 @@
+{
+	"credit": "Made by YSBB with Blockbench",
+	"parent": "minecraft:block/custom_fence_side_south",
+	"textures": {
+		"0": "block/bamboo_block",
+		"particle": "block/bamboo_block"
+	},
+	"elements": [
+		{
+			"name": "Left post",
+			"from": [6.5, -2, 10.5],
+			"to": [9.5, 14, 13.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 6, 2.375]},
+			"faces": {
+				"north": {"uv": [4, 0, 7, 16], "texture": "#0"},
+				"east": {"uv": [4, 0, 7, 16], "texture": "#0"},
+				"south": {"uv": [10, 0, 13, 16], "texture": "#0"},
+				"west": {"uv": [4, 0, 7, 16], "texture": "#0"},
+				"up": {"uv": [7, 0, 10, 3], "rotation": 180, "texture": "#0"},
+				"down": {"uv": [7, 0, 10, 3], "rotation": 180, "texture": "#0"}
+			}
+		},
+		{
+			"name": "Left post",
+			"from": [6.5, -2, 14.5],
+			"to": [9.5, 14, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 6, 2.375]},
+			"faces": {
+				"north": {"uv": [6, 0, 8, 16], "texture": "#0"},
+				"east": {"uv": [6, 0, 8, 16], "texture": "#0"},
+				"south": {"uv": [6, 0, 8, 16], "texture": "#0"},
+				"west": {"uv": [6, 0, 8, 16], "texture": "#0"},
+				"up": {"uv": [8, 0, 10, 3], "rotation": 180, "texture": "#0"},
+				"down": {"uv": [8, 0, 10, 3], "rotation": 180, "texture": "#0"}
+			}
+		}
+	]
+}

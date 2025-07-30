@@ -1,0 +1,36 @@
+{
+	"credit": "Made by YSBB with Blockbench",
+	"parent": "minecraft:block/fence_side",
+	"textures": {
+		"1": "block/stripped_birch_log",
+		"particle": "block/stripped_birch_log"
+	},
+	"elements": [
+		{
+			"name": "Left post",
+			"from": [6.5, -2, 2.5],
+			"to": [9.5, 14, 5.5],
+			"faces": {
+				"north": {"uv": [1, 0, 4, 16], "texture": "#1"},
+				"east": {"uv": [1, 0, 4, 16], "texture": "#1"},
+				"south": {"uv": [1, 0, 4, 16], "texture": "#1"},
+				"west": {"uv": [1, 0, 4, 16], "texture": "#1"},
+				"up": {"uv": [1, 0, 4, 3], "rotation": 90, "texture": "#1"},
+				"down": {"uv": [1, 0, 4, 3], "rotation": 270, "texture": "#1"}
+			}
+		},
+		{
+			"name": "Left post",
+			"from": [6.5, -2, 0],
+			"to": [9.5, 14, 1.5],
+			"faces": {
+				"north": {"uv": [13, 0, 15, 16], "texture": "#1"},
+				"east": {"uv": [13, 0, 15, 16], "texture": "#1"},
+				"south": {"uv": [13, 0, 15, 16], "texture": "#1"},
+				"west": {"uv": [13, 0, 15, 16], "texture": "#1"},
+				"up": {"uv": [13, 0, 15, 3], "texture": "#1"},
+				"down": {"uv": [13, 0, 15, 3], "texture": "#1"}
+			}
+		}
+	]
+}

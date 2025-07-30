@@ -1,0 +1,90 @@
+{
+	"credit": "Made by YSBB with Blockbench",
+	"parent": "minecraft:block/template_fence_gate",
+	"textures": {
+		"1": "block/stripped_acacia_log",
+		"particle": "block/stripped_acacia_log"
+	},
+	"elements": [
+		{
+			"name": "Left post",
+			"from": [2.75, 0, 6.5],
+			"to": [5.75, 13, 9.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 6, 2.5]},
+			"faces": {
+				"north": {"uv": [4, 0, 7, 13], "texture": "#1"},
+				"east": {"uv": [4, 0, 7, 13], "texture": "#1"},
+				"south": {"uv": [4, 0, 7, 13], "texture": "#1"},
+				"west": {"uv": [10, 0, 13, 13], "texture": "#1"},
+				"up": {"uv": [7, 0, 10, 3], "rotation": 270, "texture": "#1"},
+				"down": {"uv": [7, 0, 10, 3], "rotation": 90, "texture": "#1", "cullface": "down"}
+			}
+		},
+		{
+			"name": "Left post",
+			"from": [0, 0, 6.5],
+			"to": [1.5, 14, 9.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 6, 2.5]},
+			"faces": {
+				"north": {"uv": [6, 0, 7.5, 14], "texture": "#1"},
+				"east": {"uv": [6, 0, 9, 14], "texture": "#1"},
+				"south": {"uv": [6, 0, 7.5, 14], "texture": "#1"},
+				"west": {"uv": [6, 0, 9, 14], "texture": "#1"},
+				"up": {"uv": [8, 0, 11, 1.5], "rotation": 270, "texture": "#1"},
+				"down": {"uv": [8, 0, 11, 1.5], "rotation": 90, "texture": "#1", "cullface": "down"}
+			}
+		},
+		{
+			"name": "Left post",
+			"from": [10.25, 0, 6.5],
+			"to": [13.25, 13, 9.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [10.5, 7, 7.5]},
+			"faces": {
+				"north": {"uv": [4, 0, 7, 13], "texture": "#1"},
+				"east": {"uv": [10, 0, 13, 13], "texture": "#1"},
+				"south": {"uv": [4, 0, 7, 13], "texture": "#1"},
+				"west": {"uv": [4, 0, 7, 13], "texture": "#1"},
+				"up": {"uv": [7, 0, 10, 3], "rotation": 90, "texture": "#1"},
+				"down": {"uv": [7, 0, 10, 3], "rotation": 270, "texture": "#1", "cullface": "down"}
+			}
+		},
+		{
+			"name": "Left post",
+			"from": [6.5, 0, 6.5],
+			"to": [9.5, 14, 9.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 6, 2.5]},
+			"faces": {
+				"north": {"uv": [4, 0, 7, 14], "texture": "#1"},
+				"east": {"uv": [4, 0, 7, 14], "texture": "#1"},
+				"south": {"uv": [4, 0, 7, 14], "texture": "#1"},
+				"west": {"uv": [10, 0, 13, 14], "texture": "#1"},
+				"up": {"uv": [7, 0, 10, 3], "rotation": 270, "texture": "#1"},
+				"down": {"uv": [7, 0, 10, 3], "rotation": 90, "texture": "#1", "cullface": "down"}
+			}
+		},
+		{
+			"name": "Left post",
+			"from": [14.5, 0, 6.5],
+			"to": [16, 14, 9.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [10.5, 7, 7.5]},
+			"faces": {
+				"north": {"uv": [6, 0, 7.5, 14], "texture": "#1"},
+				"east": {"uv": [6, 0, 9, 14], "texture": "#1"},
+				"south": {"uv": [6, 0, 7.5, 14], "texture": "#1"},
+				"west": {"uv": [6, 0, 9, 14], "texture": "#1"},
+				"up": {"uv": [8, 0, 11, 1.5], "rotation": 90, "texture": "#1"},
+				"down": {"uv": [8, 0, 11, 1.5], "rotation": 270, "texture": "#1", "cullface": "down"}
+			}
+		},
+		{
+			"from": [1.5, 5, 6.75],
+			"to": [14.5, 8, 9.25],
+			"faces": {
+				"north": {"uv": [0, 0, 13, 3], "texture": "#1"},
+				"south": {"uv": [0, 0, 13, 3], "texture": "#1"},
+				"up": {"uv": [0, 0, 13, 2.5], "texture": "#1"},
+				"down": {"uv": [0, 0, 13, 2.5], "texture": "#1"}
+			}
+		}
+	]
+}
