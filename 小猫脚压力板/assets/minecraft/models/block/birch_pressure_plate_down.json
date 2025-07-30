@@ -1,0 +1,8 @@
+{
+	"credit": "Made by YSBB with Blockbench",
+	"parent": "minecraft:block/pressure_plate_down",
+	"textures": {
+		"particle": "block/birch_planks2v",
+		"texture": "block/birch_planks2v"
+	}
+}
