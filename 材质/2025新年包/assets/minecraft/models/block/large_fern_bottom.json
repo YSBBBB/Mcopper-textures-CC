@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/wt_tinted_cross",
+  "textures": {
+    "cross": "minecraft:block/large_fern_bottom"
+  }
+}

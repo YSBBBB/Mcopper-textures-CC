@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/wt_leaves",
+  "textures": {
+    "all": "minecraft:block/oak_leaves"
+  }
+}
