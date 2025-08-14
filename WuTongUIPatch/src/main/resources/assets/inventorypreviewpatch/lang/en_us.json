@@ -1,0 +1,32 @@
+{
+  "blank.title": " ",
+  "container.large.barrel": "大木桶",
+  "inventorypreviewpatch.gui.title.configs": "梧桐多彩UI补丁 配置界面 - %s",
+  "inventorypreviewpatch.gui.button.config_gui.generic": "通用",
+  "inventorypreviewpatch.gui.button.config_gui.fixes": "修复",
+
+  "inventorypreviewpatch.config.generic.name.DisplayFurnaceProgress": "预览熔炉显示加工进度",
+  "inventorypreviewpatch.config.generic.comment.DisplayFurnaceProgress": "启用该设置可以让玩家在预览熔炉类容器时显示其加工进度",
+  "inventorypreviewpatch.config.generic.name.DisplayBrewingStandProgress": "预览酿造台显示加工进度",
+  "inventorypreviewpatch.config.generic.comment.DisplayBrewingStandProgress": "启用该设置可以让玩家在预览酿造台时显示其加工进度",
+  "inventorypreviewpatch.config.generic.name.DisplayContainerTitleMode": "容器标题显示方式",
+  "inventorypreviewpatch.config.generic.comment.DisplayContainerTitleMode": "根据设置使用不同的方式显示容器标题\n空白容器标题: 让玩家在打开容器时不显示烦人的标题\n原版: 不进行修改\n显示所有容器的标题: 载入梧桐UI会只让修改了名称的容器显示标题,该模式可以显示所有容器的标题 ",
+  "inventorypreviewpatch.label.DisplayContainerTitleMode.no": "空白容器标题",
+  "inventorypreviewpatch.label.DisplayContainerTitleMode.vanilla": "原版",
+  "inventorypreviewpatch.label.DisplayContainerTitleMode.all": "显示所有容器的标题",
+  "inventorypreviewpatch.config.generic.name.DisplayPlayInventoryTitleMode": "物品栏标题显示方式",
+  "inventorypreviewpatch.config.generic.comment.DisplayPlayInventoryTitleMode": "根据设置使用不同的方式显示物品栏标题\n空白物品栏标题: 让玩家在打开容器时不显示物品栏或背包的标题\n原版: 不进行修改\n强制显示物品栏标题: 在某些情况下物品栏或背包的标题会被容器GUI覆盖,该模式可以强制显示物品栏标题",
+  "inventorypreviewpatch.label.DisplayPlayInventoryTitleMode.no": "空白物品栏标题",
+  "inventorypreviewpatch.label.DisplayPlayInventoryTitleMode.vanilla": "原版",
+  "inventorypreviewpatch.label.DisplayPlayInventoryTitleMode.all": "强制显示物品栏标题",
+
+  "inventorypreviewpatch.config.fixes.name.BarrelFixes": "木桶修复",
+  "inventorypreviewpatch.config.fixes.comment.BarrelFixes": "启用该设置可以在木桶上再次绘制一层GUI，防止木桶改名后GUI丢失\n该设置也解决了大木桶GUI错乱问题\n不加载梧桐完整版UI则该设置无效\n目前已知Jade的叠加层可能被该GUI覆盖",
+  "inventorypreviewpatch.config.fixes.name.InventoryPreviewFixMode": "容器预览修复类型",
+  "inventorypreviewpatch.config.fixes.comment.InventoryPreviewFixMode": "根据设置使用不同的修复方法\n当启用梧桐UI模式但没加载梧桐完整版UI时会默认使用原版修复",
+  "inventorypreviewpatch.label.InventoryPreviewFixMode.no": "不修复",
+  "inventorypreviewpatch.label.InventoryPreviewFixMode.vanilla": "原版修复",
+  "inventorypreviewpatch.label.InventoryPreviewFixMode.wutong": "梧桐UI模式",
+  "inventorypreviewpatch.config.fixes.name.RenderShulkerboxBackground": "预览潜影盒叠加GUI",
+  "inventorypreviewpatch.config.fixes.comment.RenderShulkerboxBackground": "如果启用该设置，便会在预览潜影盒时绘制对应梧桐GUI\n但是由于UI包里的潜影盒GUI颜色偏紫，导致有些潜影盒在预览时颜色不正常\n已知白色、黑色、(淡)灰色、棕色有这问题\ntips: 其实完全可以关闭tweakeroo或minihud的潜影盒颜色显示再打开该设置的"
+}
