@@ -1,0 +1,8 @@
+accessWidener v2 named
+accessible field net/minecraft/client/gui/screen/Screen title Lnet/minecraft/text/Text;
+mutable field net/minecraft/client/gui/screen/Screen title Lnet/minecraft/text/Text;
+accessible field net/minecraft/client/gui/screen/ingame/HandledScreen playerInventoryTitle Lnet/minecraft/text/Text;
+mutable field net/minecraft/client/gui/screen/ingame/HandledScreen playerInventoryTitle Lnet/minecraft/text/Text;
+accessible field net/minecraft/screen/ScreenHandler type Lnet/minecraft/screen/ScreenHandlerType;
+accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity propertyDelegate Lnet/minecraft/screen/PropertyDelegate;
+accessible field net/minecraft/block/entity/BrewingStandBlockEntity propertyDelegate Lnet/minecraft/screen/PropertyDelegate;
