@@ -16,7 +16,10 @@
     ],
     "modmenu": [
       "inventorypreviewpatch.compat.modmenu.ModMenuImpl"
-    ]
+    ],
+    "rei_client": [
+      "inventorypreviewpatch.compat.rei.REIHelper"
+      ]
 },
   "mixins": [
     "inventorypreviewpatch.mixins.json"
@@ -28,5 +31,5 @@
     "fabric-api": "*",
     "malilib": "*"
 },
-  "accessWidener": "mod.accesswidener"
+  "accessWidener": "inventorypreviewpatch.accesswidener"
 }

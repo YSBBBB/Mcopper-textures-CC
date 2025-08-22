@@ -1,12 +1,13 @@
 package inventorypreviewpatch.render;
 
-import inventorypreviewpatch.event.HitEventsHandler;
+import fi.dy.masa.malilib.util.GuiUtils;
+import inventorypreviewpatch.event.HitListener;
 import inventorypreviewpatch.interfaces.ModIRenderer;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.resource.ResourceManager;
+import net.minecraft.entity.Entity;
 
 public class RenderHandler implements ModIRenderer {
     public RenderHandler() {}
@@ -19,22 +20,30 @@ public class RenderHandler implements ModIRenderer {
         if (mc.player == null || mc.world == null || currentscreen == null) {
             return;
         }
-        BlockEntity containerEntity = HitEventsHandler.getInstance().blockEntity;
+        BlockEntity blockEntity = HitListener.getInstance().blockEntity;
+        Entity entity = HitListener.getInstance().entity;
+        var containerEntity = blockEntity != null ?  blockEntity : entity;
         WuTongUIOverlayHandler.setTitle(currentscreen, containerEntity);
+        //加入按钮组件（小抄）
+        CheatSheetOverlay.getInstance(currentscreen).addCheatSheetButton();
     }
 
     @Override
     public void onRenderScreenOverlay(DrawContext drawContext, int mouseX, int mouseY, float tickDelta) {
-        //绘制(大)木桶的GUI
-        //LOGGER.info("2成功运行");
-        MinecraftClient mc = MinecraftClient.getInstance();
+       MinecraftClient mc = MinecraftClient.getInstance();
         Screen currentscreen = mc.currentScreen;
-        ResourceManager manager = mc.getResourceManager();
-        if (mc.player == null || mc.world == null || currentscreen == null || manager == null) {
+        if (mc.player == null || mc.world == null || currentscreen == null) {
             return;
         }
-        BlockEntity containerEntity = HitEventsHandler.getInstance().blockEntity;
-        WuTongUIOverlayHandler.renderContainerGUI(currentscreen, containerEntity);
+        int x = GuiUtils.getScaledWindowWidth() / 2;
+        int y = GuiUtils.getScaledWindowHeight() / 2;
+        BlockEntity blockEntity = HitListener.getInstance().blockEntity;
+        Entity entity = HitListener.getInstance().entity;
+        var containerEntity = blockEntity != null ?  blockEntity :  entity;
         WuTongUIOverlayHandler.drawTitle(drawContext, currentscreen, containerEntity);
+        //绘制按钮组件（小抄）
+        CheatSheetOverlay.getInstance(currentscreen).renderButton(drawContext, x, y);
+        CheatSheetOverlay.getInstance(currentscreen).renderCheatSheet(drawContext, x, y);
     }
+
 }

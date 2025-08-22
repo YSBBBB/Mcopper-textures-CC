@@ -64,4 +64,5 @@ public enum DisplayPlayInventoryTitleMode implements IConfigOptionListEntry {
 
             return DisplayPlayInventoryTitleMode.VANILLA;
         }
+
 }

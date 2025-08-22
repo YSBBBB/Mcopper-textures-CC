@@ -1,123 +1,137 @@
 package inventorypreviewpatch.render;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import fi.dy.masa.malilib.render.InventoryOverlay;
+import fi.dy.masa.malilib.render.RenderUtils;
 import net.minecraft.block.entity.*;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.BrewingStandScreen;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.screen.ingame.HopperScreen;
+import net.minecraft.client.render.*;
+import net.minecraft.entity.vehicle.AbstractBoatEntity;
+import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Nameable;
 
-import static inventorypreviewpatch.ModUtils.isChinese;
-import static inventorypreviewpatch.ModUtils.isResourcePackLoaded;
+import static inventorypreviewpatch.ModUtils.isGenericScreen;
 import static inventorypreviewpatch.configs.Configs.Fixes.BARREL_FIXES;
 import static inventorypreviewpatch.configs.Configs.Generic.Display_Container_Title_Mode;
 import static inventorypreviewpatch.configs.Configs.Generic.Display_PlayInventory_Title_Mode;
+import static inventorypreviewpatch.event.ResourcesLoadedListener.*;
+import static inventorypreviewpatch.render.WuTongUIOverlay.*;
+import static net.minecraft.screen.ScreenHandlerType.GENERIC_9X3;
 import static net.minecraft.screen.ScreenHandlerType.GENERIC_9X6;
 
 public class WuTongUIOverlayHandler {
 
-    public WuTongUIOverlayHandler() {
-    }
+    public static void renderFrame(InventoryOverlay.InventoryRenderType type, BlockEntity be, int x, int y, int slotsPerRow, int totalSlots, int form) {
+        RenderUtils.setupBlend();
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder buffer = tessellator.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+        BuiltBuffer builtBuffer;
 
-    public static void drawTitle(DrawContext drawContext, Screen screen, BlockEntity containerEntity) {
-        //GenericContainerScree
-        if (!isResourcePackLoaded()) return;
-        if (!(screen instanceof GenericContainerScreen screen1)) return;
-        int rows = screen1.getScreenHandler().getRows();
-        int backgroundHeight = 114 + rows * 18;
-        int titleX = (screen.getNavigationFocus().width() - 176) / 2 + 8;
-        if (Display_PlayInventory_Title_Mode.getStringValue().equals("all")) {
-            int playerInventoryTitleY = (screen.getNavigationFocus().height() - (backgroundHeight)) / 2 + backgroundHeight - 94;
-            Text playerInventoryTitle = Text.translatable("key.categories.inventory");
-            drawContext.drawText(screen.getTextRenderer(), playerInventoryTitle, titleX, playerInventoryTitleY, 4210752, false);
+        RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX);
+        switch (form) {
+            case 1 -> renderInventoryBackground(type, x, y, slotsPerRow, totalSlots, buffer);
+            case 2 -> renderSpecialInventoryBackground(be, x, y, totalSlots, buffer);
+            case 3 -> renderBarrelBackground(x, y, totalSlots, buffer);
+            case 4 -> renderFurnaceProgress((AbstractFurnaceBlockEntity) be, x, y, buffer);
+            case 5 -> renderBrewingStandProgress((BrewingStandBlockEntity) be, x, y, buffer);
         }
 
-        if (!(containerEntity instanceof BarrelBlockEntity || containerEntity instanceof EnderChestBlockEntity)) return;
-        Text title;
-        int titleY = (screen.getNavigationFocus().height() - (backgroundHeight)) / 2 + 6;
-        if (containerEntity instanceof BarrelBlockEntity) {
-            title = isChinese() && screen.getTitle().equals(Text.translatable("container.barrel")) ?
-                    Display_Container_Title_Mode.getStringValue().equals("all") ? Text.of("木桶") : screen.getTitle() : screen.getTitle();
-        } else {
-            title = isChinese() ? Display_Container_Title_Mode.getStringValue().equals("all") ? Text.of("末影箱") : screen.getTitle() : screen.getTitle();
+        RenderSystem.enableBlend();
+
+        try {
+            builtBuffer = buffer.end();
+            BufferRenderer.drawWithGlobalProgram(builtBuffer);
+            builtBuffer.close();
+        } catch (Exception ignored) {
         }
-        drawContext.drawText(screen.getTextRenderer(), title, titleX, titleY, 4210752, false);
     }
 
-    public static void setTitle(Screen screen, BlockEntity containerEntity) {
-        ScreenHandlerType<?> type = null;
-        if (screen instanceof HandledScreen<?> handledScreen) {
+    public static <T> void drawTitle(DrawContext drawContext, Screen screen, T containerEntity) {
+
+        if (!isLoadedWuTongUI) return;
+        if (isGenericScreen(screen)) {
+            int color = 4210752;
+            int rows = screen instanceof GenericContainerScreen screen2 ? screen2.getScreenHandler().getRows() : 0;
+            int backgroundHeight = 114 + rows * 18;
+            int titleX = (screen.getNavigationFocus().width() - 176) / 2 + 8;
+            //物品栏标题
+            if (Display_PlayInventory_Title_Mode.getStringValue().equals("all")) {
+                int playerInventoryTitleY = (screen.getNavigationFocus().height() - (backgroundHeight)) / 2 + backgroundHeight - 94;
+                Text playerInventoryTitle = Text.translatable("key.categories.inventory");
+                drawContext.drawText(screen.getTextRenderer(), playerInventoryTitle, titleX, playerInventoryTitleY, color, false);
+            }
+
+            //容器
+            if (Display_Container_Title_Mode.getStringValue().equals("all")) {
+                Text title = null;
+                //如果被改过名，就用改后的名字
+                if (containerEntity instanceof Nameable nameableContainer) {
+                    title = nameableContainer.getCustomName();
+                }
+                if (title == null) {
+                    title = amendTitle(screen, containerEntity);
+                }
+                int titleY = (screen.getNavigationFocus().height() - (backgroundHeight)) / 2 + 6;
+                if (screen instanceof HopperScreen) {
+                    TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+                    titleX = (screen.getNavigationFocus().width() - textRenderer.getWidth(title.asOrderedText())) / 2;
+                    titleY = titleY - 25;
+                    color = 0xFF606060;
+                }
+                drawContext.drawText(screen.getTextRenderer(), title, titleX, titleY, color, false);
+            }
+        }
+    }
+
+    public static <T> void setTitle(Screen screen, T containerEntity) {
+        ScreenHandlerType<?> type;
+        if (screen instanceof HandledScreen<?> handledScreen && isGenericScreen(screen)) {
             type = handledScreen.getScreenHandler().type;
             //强制显示物品栏标题功能开启后会在drawTitle()方法重新绘制新标题
             if (Display_PlayInventory_Title_Mode.getStringValue().equals("all") || Display_PlayInventory_Title_Mode.getStringValue().equals("no")) {
-                handledScreen.playerInventoryTitle = Text.translatable("blank.title");
+                handledScreen.playerInventoryTitle = Text.translatable("inventorypreviewpatch.blank.title");
             }
-        }
 
-        //暂时割弃
-       /* if (!isChinese() && containerEntity instanceof EnderChestBlockEntity && screen instanceof GenericContainerScreen) {
-            //保证末影箱的GUI正常加载
-            // \uB111也就是넑
-            screen.title = Text.literal("\uB111");
-        }*/
-
-        //不显示标题功能
-        if (Display_Container_Title_Mode.getStringValue().equals("no")) {
-            if (isResourcePackLoaded()) {
-                //不修改末影箱和酿造台的标题，防止GUI丢失
-                if (screen.getTitle().equals(Text.translatable("container.enderchest")) || screen.getTitle().equals(Text.translatable("container.brewing")))
+            if (isLoadedWuTongUI) {
+                if (screen instanceof BrewingStandScreen && (isChinese || isEN_US)) {
+                    //酿造台的小抄之后会将单独渲染（原版有点小bug）
+                    screen.title = Text.translatable("inventorypreviewpatch.blank.title");
                     return;
+                } else if (containerEntity instanceof BarrelBlockEntity) {
+                    //让不同语言都能使用(大)木桶和末影箱的GUI
+                    if (type == GENERIC_9X6 && BARREL_FIXES.getBooleanValue()) {
+                        screen.title = Text.translatable("inventorypreviewpatch.large.barrel.title");
+                    } else if (type == GENERIC_9X3) {
+                        screen.title = Text.translatable("inventorypreviewpatch.barrel.title");
+                    }
+                    return;
+                } else if (containerEntity instanceof EnderChestBlockEntity) {
+                    screen.title = Text.translatable("inventorypreviewpatch.enderchest.title");
+                    return;
+                } else if (containerEntity instanceof AbstractMinecartEntity) {
+                    screen.title = Text.translatable("inventorypreviewpatch.minecart.title");
+                    return;
+                } else if (containerEntity instanceof AbstractBoatEntity) {
+                    screen.title = Text.translatable("inventorypreviewpatch.boat.title");
+                    return;
+                }
             }
-            //用 访问加宽器 修改title（这个版本我找不到setTitle()方法）
-            screen.title = Text.translatable("blank.title");
-        } else if (screen.getTitle().equals(Text.translatable("container.barrel"))) {
-            //如果是大木桶的GUI，则把标题从“木桶”改为“大木桶”（阻止叠加错乱gui）
-            if (type == GENERIC_9X6) {
-                screen.title = Text.translatable("container.large.barrel");
+
+            if (Display_Container_Title_Mode.getStringValue().equals("no")) {
+                //用 访问加宽器 修改title（这个版本我找不到setTitle()方法
+                screen.title = Text.translatable("inventorypreviewpatch.blank.title");
             }
         }
     }
 
-    public static void renderContainerGUI(Screen screen, BlockEntity containerEntity) {
-        if (isResourcePackLoaded() && (BARREL_FIXES.getBooleanValue()) && screen instanceof GenericContainerScreen genericContainerScreen) {
-           if (containerEntity instanceof BarrelBlockEntity) {
-               //使用 访问加宽器 获取type，因为getType()方法在某些情况下会抛出UnsupportedOperationException错误，导致崩溃
-               // 吐槽：返回null不好吗，直接抛出是什么非阳间做法
-               // type = handledScreen.getScreenHandler().getType();
-               ScreenHandlerType<?> type = genericContainerScreen.getScreenHandler().type;
-               WuTongUIOverlay.renderBarrelOverlay(type);
-           }
-        }
-    }
-
-    public static void RenderFurnaceProcessingProgress(AbstractFurnaceBlockEntity furnace, int x, int y) {
-
-        Identifier TEXTURE_FURNACE = Identifier.ofVanilla("textures/gui/container/furnace.png");
-        if (furnace instanceof SmokerBlockEntity)
-            TEXTURE_FURNACE = Identifier.ofVanilla("textures/gui/container/smoker.png");
-        else if (furnace instanceof BlastFurnaceBlockEntity)
-            TEXTURE_FURNACE = Identifier.ofVanilla("textures/gui/container/blast_furnace.png");
-
-        boolean isBurning = furnace.propertyDelegate.get(0) > 0;
-        int i = furnace.propertyDelegate.get(2);
-        int j = furnace.propertyDelegate.get(3);
-        int k = furnace.propertyDelegate.get(1);
-        if (k == 0) {
-            k = 200;
-        }
-
-        float cookProgress = j != 0 && i != 0 ? MathHelper.clamp((float) i / j, 0.0F, 1.0F) : 0.0f;
-        float fuelProgress = MathHelper.clamp((float) furnace.propertyDelegate.get(0) / k, 0.0F, 1.0F);
-        WuTongUIOverlay.renderFurnaceProgress(TEXTURE_FURNACE, x, y, cookProgress, fuelProgress, isBurning);
-    }
-
-    public static void RenderBrewingStandProcessingProgress(BrewingStandBlockEntity brewingStand, int x, int y) {
-        final Identifier TEXTURE_BREWINGSTAND = Identifier.ofVanilla("textures/gui/container/brewing_stand.png");
-        int brewTime = brewingStand.propertyDelegate.get(0);
-        int fuel  = brewingStand.propertyDelegate.get(1);
-        WuTongUIOverlay.renderBrewingStandProgress(TEXTURE_BREWINGSTAND, x, y, brewTime, fuel);
-    }
 }

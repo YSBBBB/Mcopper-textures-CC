@@ -4,9 +4,10 @@
   "package": "inventorypreviewpatch.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "renders.DefaultRenderMixin",
-    "renders.ExtraRenderMixin",
-    "renders.WuTongUIMixin"
+    "renders.ShulkerBoxScreenMixin",
+    "renders.InventoryPreview.DefaultRenderMixin",
+    "renders.InventoryPreview.ExtraRenderMixin",
+    "renders.InventoryPreview.WuTongUIMixin"
   ],
   "injectors": {
     "defaultRequire": 0

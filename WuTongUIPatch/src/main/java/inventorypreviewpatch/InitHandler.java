@@ -1,12 +1,9 @@
 package inventorypreviewpatch;
 
-import fi.dy.masa.malilib.config.ConfigManager;
-import fi.dy.masa.malilib.registry.Registry;
-import fi.dy.masa.malilib.util.data.ModInfo;
 import inventorypreviewpatch.configs.Configs;
-import inventorypreviewpatch.event.HitEventsHandler;
-import inventorypreviewpatch.event.ModEventHandler;
-import inventorypreviewpatch.gui.GuiConfigs;
+import inventorypreviewpatch.event.HitListener;
+import inventorypreviewpatch.event.ModRenderEventHandler;
+import inventorypreviewpatch.event.ResourcesLoadedListener;
 import inventorypreviewpatch.interfaces.ModIRenderer;
 import inventorypreviewpatch.render.RenderHandler;
 
@@ -17,14 +14,17 @@ public class InitHandler
 
     public void registerModHandlers()
     {
-        ConfigManager.getInstance().registerConfigHandler(Reference.MOD_ID, new Configs());
-        Registry.CONFIG_SCREEN.registerConfigScreenFactory(
-                new ModInfo(Reference.MOD_ID, Reference.MOD_NAME, GuiConfigs::new)
-        );
-        HitEventsHandler.getInstance().getHitResult();
+
+        Configs.ConfigsRegister();
+
+        HitListener.getInstance().getHitBlockResult();
+        HitListener.getInstance().getHitEntityResult();
+        ModRenderEventHandler.registerRenderers();
+        ResourcesLoadedListener.getInstance().setValue();
 
         ModIRenderer modRenderer = new RenderHandler();
-        ModEventHandler.getInstance().registerRendererAfterScreenOverlay(modRenderer);
-        ModEventHandler.getInstance().registerRendererBeforeScreenOverlay(modRenderer);
+        ModRenderEventHandler.getInstance().registerRendererAfterScreenOverlay(modRenderer);
+        ModRenderEventHandler.getInstance().registerRendererBeforeScreenOverlay(modRenderer);
+
     }
 }

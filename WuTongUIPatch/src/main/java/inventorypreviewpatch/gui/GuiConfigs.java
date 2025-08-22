@@ -11,6 +11,7 @@ import inventorypreviewpatch.configs.Configs;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class GuiConfigs extends GuiConfigsBase
 {
@@ -98,16 +99,16 @@ public class GuiConfigs extends GuiConfigsBase
         public void actionPerformedWithButton(ButtonBase button, int mouseButton)
         {
             GuiConfigs.tab = this.tab;
-            this.parent.reCreateListWidget(); // apply the new config width
-            this.parent.getListWidget().resetScrollbarPosition();
+            this.parent.reCreateListWidget();
+            Objects.requireNonNull(this.parent.getListWidget()).resetScrollbarPosition();
             this.parent.initGui();
         }
     }
 
     public enum ConfigGuiTab
     {
-        GENERIC         ("inventorypreviewpatch.gui.button.config_gui.generic"),
-        FIXES         ("inventorypreviewpatch.gui.button.config_gui.fixes");
+        GENERIC   ("inventorypreviewpatch.gui.button.config_gui.generic"),
+        FIXES     ("inventorypreviewpatch.gui.button.config_gui.fixes");
 
         private final String translationKey;
 
@@ -121,4 +122,5 @@ public class GuiConfigs extends GuiConfigsBase
             return StringUtils.translate(this.translationKey);
         }
     }
+
 }

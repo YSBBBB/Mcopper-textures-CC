@@ -1,12 +1,11 @@
 package inventorypreviewpatch.configs.utils;
-
 import fi.dy.masa.malilib.config.IConfigOptionListEntry;
 import fi.dy.masa.malilib.util.StringUtils;
 
 public enum InventoryPreviewFixMode implements IConfigOptionListEntry {
         NO      ("no",       "inventorypreviewpatch.label.InventoryPreviewFixMode.no"),
-        VANILLA      ("vanilla",       "inventorypreviewpatch.label.InventoryPreviewFixMode.vanilla"),
-        WUTONG  ("wutong",       "inventorypreviewpatch.label.InventoryPreviewFixMode.wutong"),
+        VANILLA ("vanilla",  "inventorypreviewpatch.label.InventoryPreviewFixMode.vanilla"),
+        WUTONG  ("wutong",   "inventorypreviewpatch.label.InventoryPreviewFixMode.wutong"),
         ;
 
         private final String configString;
@@ -64,4 +63,5 @@ public enum InventoryPreviewFixMode implements IConfigOptionListEntry {
 
         return InventoryPreviewFixMode.NO;
     }
+
 }

@@ -3,16 +3,16 @@ package inventorypreviewpatch.configs.utils;
 import fi.dy.masa.malilib.config.IConfigOptionListEntry;
 import fi.dy.masa.malilib.util.StringUtils;
 
-public enum DisplayContainerTitleMode implements IConfigOptionListEntry{
-    ALL      ("all",       "inventorypreviewpatch.label.DisplayContainerTitleMode.all"),
-    VANILLA  ("vanilla",       "inventorypreviewpatch.label.DisplayContainerTitleMode.vanilla"),
-    NO       ("no",       "inventorypreviewpatch.label.DisplayContainerTitleMode.no"),
+public enum RenderShulkerboxColorMode implements IConfigOptionListEntry {
+    NO       ("no",     "inventorypreviewpatch.label.RenderShulkerboxColorMode.no")  ,
+    HALF     ("half",   "inventorypreviewpatch.label.RenderShulkerboxColorMode.half"),
+    ALL      ("all",    "inventorypreviewpatch.label.RenderShulkerboxColorMode.all") ,
     ;
 
     private final String configString;
     private final String unlocName;
 
-    DisplayContainerTitleMode(String configString, String unlocName)
+    RenderShulkerboxColorMode(String configString, String unlocName)
     {
         this.configString = configString;
         this.unlocName = unlocName;
@@ -47,14 +47,14 @@ public enum DisplayContainerTitleMode implements IConfigOptionListEntry{
     }
 
     @Override
-    public DisplayContainerTitleMode fromString(String name)
+    public RenderShulkerboxColorMode fromString(String name)
     {
         return fromStringStatic(name);
     }
 
-    public static DisplayContainerTitleMode fromStringStatic(String name)
+    public static RenderShulkerboxColorMode fromStringStatic(String name)
     {
-        for (DisplayContainerTitleMode mode : DisplayContainerTitleMode.values())
+        for (RenderShulkerboxColorMode mode : RenderShulkerboxColorMode.values())
         {
             if (mode.configString.equalsIgnoreCase(name))
             {
@@ -62,7 +62,7 @@ public enum DisplayContainerTitleMode implements IConfigOptionListEntry{
             }
         }
 
-        return DisplayContainerTitleMode.VANILLA;
+        return RenderShulkerboxColorMode.NO;
     }
 
 }
