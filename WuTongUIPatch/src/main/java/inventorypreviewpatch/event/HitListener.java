@@ -32,7 +32,7 @@ public class HitListener {
             this.hand = hand;
             this.world = world;
             this.blockEntity = world.getBlockEntity(pos);
-            //清除Entity的缓存
+            //清除entity的缓存
             this.entity = null;
             return ActionResult.PASS;
         });

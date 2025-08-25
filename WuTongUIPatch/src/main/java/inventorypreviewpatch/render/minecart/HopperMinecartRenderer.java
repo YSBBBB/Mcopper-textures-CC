@@ -1,8 +1,7 @@
 package inventorypreviewpatch.render.minecart;
 
-import fi.dy.masa.malilib.interfaces.IDataSyncer;
 import fi.dy.masa.malilib.util.WorldUtils;
-import fi.dy.masa.minihud.data.EntitiesDataManager;
+import inventorypreviewpatch.ModUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
@@ -23,7 +22,6 @@ import static inventorypreviewpatch.configs.Configs.Generic.RENDER_LOCKED_HOPPER
 
 @Environment(EnvType.CLIENT)
 public class HopperMinecartRenderer extends AbstractMinecartEntityRenderer<HopperMinecartEntity, HopperMinecartEntityRenderState> {
-    private IDataSyncer syncer = null;
 
     public HopperMinecartRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, EntityModelLayers.HOPPER_MINECART);
@@ -48,27 +46,16 @@ public class HopperMinecartRenderer extends AbstractMinecartEntityRenderer<Hoppe
         if (RENDER_LOCKED_HOPPER_MINECART. getBooleanValue()) {
             World world = WorldUtils.getBestWorld(MinecraftClient.getInstance());
             NbtCompound nbt = new NbtCompound();
-            Pair<Entity, NbtCompound> pair = this.getDataSyncer().requestEntity(world, hopperMinecartEntity.getId());
+            Pair<Entity, NbtCompound> pair = ModUtils.getDataSyncer(null).requestEntity(world, hopperMinecartEntity.getId());
 
             if (pair != null) {
                 nbt = pair.getRight();
             }
-
             hopperMinecartEntityRenderState.enabled = !nbt.contains("Enabled") || nbt.getBoolean("Enabled");
         } else {
             hopperMinecartEntityRenderState.enabled = true;
         }
     }
-
-    public IDataSyncer getDataSyncer()
-    {
-        if (this.syncer == null)
-        {
-            this.syncer = EntitiesDataManager.getInstance();
-        }
-        return this.syncer;
-    }
-
 }
 
 

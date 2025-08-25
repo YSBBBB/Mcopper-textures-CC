@@ -53,5 +53,4 @@ public class ModRenderEventHandler {
                         renderer.onRenderBeforeScreenOverlay(drawContext, mouseX, mouseY, tickDelta)
                 ));
     }
-
 }

@@ -1,8 +1,10 @@
 package inventorypreviewpatch.mixin.renders.InventoryPreview;
 
+import fi.dy.masa.malilib.render.InventoryOverlay;
 import fi.dy.masa.malilib.render.InventoryOverlayScreen;
 import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.malilib.util.WorldUtils;
+import inventorypreviewpatch.helper.MethodExecuteHelper;
 import inventorypreviewpatch.render.WuTongUIOverlay;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.entity.*;
@@ -29,14 +31,17 @@ import static inventorypreviewpatch.render.WuTongUIOverlayHandler.renderFrame;
 
 @Mixin(InventoryOverlayScreen.class)
 public class ExtraRenderMixin {
+
     @Unique
     public boolean shulkerBGColors;
 
     @Unique
-    public Context previewData;
+    public InventoryOverlay.Context previewData;
 
     @Inject(method = "render", at = @At("TAIL"))
     public void render(DrawContext drawContext, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        MethodExecuteHelper.startExecute("inventory_preview");
+
         if (!Inventory_Preview_Fix_Mode.getStringValue().equals("wutong") || !isLoadedWuTongUI) return;
         BlockEntity be = previewData.be();
         NbtCompound nbt = previewData.nbt();
@@ -69,13 +74,7 @@ public class ExtraRenderMixin {
                     return;
                 }
                 //方块实体
-                if (
-                        be instanceof ChestBlockEntity
-                        || be instanceof BarrelBlockEntity
-                        || be instanceof AbstractFurnaceBlockEntity
-                        || be instanceof ShulkerBoxBlockEntity
-                        || be instanceof BrewingStandBlockEntity
-                ) {
+                if (be instanceof ChestBlockEntity || be instanceof BarrelBlockEntity || be instanceof AbstractFurnaceBlockEntity || be instanceof ShulkerBoxBlockEntity || be instanceof BrewingStandBlockEntity) {
 
                     //潜影盒预览添加底色
                     if (be.getCachedState().getBlock() instanceof ShulkerBoxBlock sbb) {
@@ -96,5 +95,4 @@ public class ExtraRenderMixin {
             }
         }
     }
-
 }

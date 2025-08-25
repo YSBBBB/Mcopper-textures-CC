@@ -9,7 +9,9 @@ import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.entity.*;
 import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.AnvilScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.screen.ingame.SmithingScreen;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.vehicle.*;
@@ -251,13 +253,14 @@ public class WuTongUIOverlay {
             boolean isLargeInventory = handledScreen.getScreenHandler().slots.size() >= 54;
             boolean UseSpecificLanguage = isChinese || isEN_US;
             switch (containerEntity) {
-                case BarrelBlockEntity ignore -> {
-                    if (UseSpecificLanguage) {
-                        title = isLargeInventory ? Text.translatable("container.large.barrel") : Text.translatable("container.small.barrel");
-                    } else {
-                        title = Text.translatable("container.barrel");
+                case null -> {
+                    if (screen instanceof AnvilScreen) {
+                        title = Text.translatable("block.minecraft.anvil");
+                    } else if (screen instanceof SmithingScreen) {
+                        title = Text.translatable("block.minecraft.smithing_table");
                     }
                 }
+
                 case TrappedChestBlockEntity ignore -> {
                     if (DISPLAY_TRAPPED_CHEST_TITLE.getBooleanValue()) {
                         if (UseSpecificLanguage && isLargeInventory) {
@@ -279,6 +282,13 @@ public class WuTongUIOverlay {
                         }
                     } else {
                         title = Text.translatable("container.chest" + (isLargeInventory? "Double": null));
+                    }
+                }
+                case BarrelBlockEntity ignore -> {
+                    if (UseSpecificLanguage) {
+                        title = isLargeInventory ? Text.translatable("container.large.barrel") : Text.translatable("container.small.barrel");
+                    } else {
+                        title = Text.translatable("container.barrel");
                     }
                 }
                 case ChestMinecartEntity ignore -> {
@@ -319,6 +329,7 @@ public class WuTongUIOverlay {
                     if (containerEntity instanceof BlockEntity be) {
                             Block block = be.getCachedState().getBlock();
                             title = block.getName() != null ? block.getName() : block.asItem().getName();
+
                     } else if (containerEntity instanceof Entity entity) {
                         title = entity.getName();
                     }
@@ -327,5 +338,4 @@ public class WuTongUIOverlay {
         }
         return title;
     }
-
 }

@@ -41,6 +41,7 @@ public class Configs implements IConfigHandler {
         public static final ConfigBoolean DISPLAY_BREWING_STAND_PROGRESS = new ConfigBoolean("DisplayBrewingStandProgress", false, translate("DisplayBrewingStandProgress")).apply(GENERIC_KEY);
         public static final ConfigBoolean DISPLAY_TRAPPED_CHEST_TITLE = new ConfigBoolean("DisplayTrappedChestTitle", false, translate("DisplayTrappedChestTitle")).apply(GENERIC_KEY);
         public static final ConfigBoolean RENDER_LOCKED_HOPPER_MINECART = new ConfigBoolean("RenderLockedHopperMinecart", false, translate("RenderLockedHopperMinecart")).apply(GENERIC_KEY);
+        public static final ConfigBoolean Creeper_Forewarn = new ConfigBoolean("CreeperForewarn", false, translate("CreeperForewarn")).apply(GENERIC_KEY);
         public static final ConfigOptionList Display_Container_Title_Mode = new ConfigOptionList("DisplayContainerTitleMode", DisplayContainerTitleMode.VANILLA).apply(GENERIC_KEY);
         public static final ConfigOptionList Display_PlayInventory_Title_Mode = new ConfigOptionList("DisplayPlayInventoryTitleMode", DisplayPlayInventoryTitleMode.VANILLA).apply(GENERIC_KEY);
         public static final ConfigOptionList Render_Shulkerbox_Color_Mode = new ConfigOptionList("RenderShulkerboxColorMode", RenderShulkerboxColorMode.NO).apply(GENERIC_KEY);
@@ -48,6 +49,7 @@ public class Configs implements IConfigHandler {
 
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
                 Use_Cheat_Sheet,
+                Creeper_Forewarn,
                 DISPLAY_FURNACE_PROGRESS,
                 DISPLAY_BREWING_STAND_PROGRESS,
                 DISPLAY_TRAPPED_CHEST_TITLE,

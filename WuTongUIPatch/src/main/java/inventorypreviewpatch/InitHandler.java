@@ -1,5 +1,6 @@
 package inventorypreviewpatch;
 
+import fi.dy.masa.malilib.event.RenderEventHandler;
 import inventorypreviewpatch.configs.Configs;
 import inventorypreviewpatch.event.HitListener;
 import inventorypreviewpatch.event.ModRenderEventHandler;
@@ -14,7 +15,6 @@ public class InitHandler
 
     public void registerModHandlers()
     {
-
         Configs.ConfigsRegister();
 
         HitListener.getInstance().getHitBlockResult();
@@ -23,6 +23,7 @@ public class InitHandler
         ResourcesLoadedListener.getInstance().setValue();
 
         ModIRenderer modRenderer = new RenderHandler();
+        RenderEventHandler.getInstance().registerGameOverlayRenderer(modRenderer);
         ModRenderEventHandler.getInstance().registerRendererAfterScreenOverlay(modRenderer);
         ModRenderEventHandler.getInstance().registerRendererBeforeScreenOverlay(modRenderer);
 
