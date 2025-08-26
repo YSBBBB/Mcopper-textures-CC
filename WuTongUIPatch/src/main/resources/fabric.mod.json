@@ -19,8 +19,8 @@
     ],
     "rei_client": [
       "inventorypreviewpatch.compat.rei.REIHelper"
-      ]
-},
+    ]
+  },
   "mixins": [
     "inventorypreviewpatch.mixins.json"
   ],
@@ -30,6 +30,6 @@
     "java": ">=21",
     "fabric-api": "*",
     "malilib": "*"
-},
+  },
   "accessWidener": "inventorypreviewpatch.accesswidener"
 }

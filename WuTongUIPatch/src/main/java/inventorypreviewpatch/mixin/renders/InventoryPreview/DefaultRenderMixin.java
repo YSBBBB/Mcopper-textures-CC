@@ -18,10 +18,6 @@ import static inventorypreviewpatch.event.ResourcesLoadedListener.isLoadedWuTong
 
 @Mixin(value = InventoryOverlay.class, priority = 500)
 public class DefaultRenderMixin {
-    //这样会导致更新不及时
-    /*@Unique private static boolean isUsed =
-                     Inventory_Preview_Fix_Mode.getStringValue().equals("vanilla") ||
-                    (Inventory_Preview_Fix_Mode.getStringValue().equals("wutong") && !isLoadedWuTongUI());*/
 
     @Redirect(method = "renderLockedSlotAt", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIIII)V"))
     private static void drawGuiTexture(DrawContext instance, Function<Identifier, RenderLayer> renderLayers, Identifier sprite, int x, int y, int width, int height, int color) {
@@ -47,16 +43,18 @@ public class DefaultRenderMixin {
 
     @Redirect(method = "renderEquipmentOverlayBackground",
             at = @At(value = "INVOKE", target = "Lfi/dy/masa/malilib/render/RenderUtils;bindTexture(Lnet/minecraft/util/Identifier;)V"))
-    private static void redirectTextureII(Identifier texture) {rredirectTexture(texture);}
+    private static void redirectTextureII(Identifier texture) {
+        rredirectTexture(texture);
+    }
 
     @Unique
     private static void rredirectTexture(Identifier texture) {
-            if (texture.getPath().startsWith("textures/gui/container/")) {
-                int insertPos = texture.getPath().indexOf("container/") + 10;
-                StringBuilder sb = new StringBuilder(texture.getPath());
-                sb.insert(insertPos, "fixed_");
-                Identifier newTexture = Identifier.ofVanilla(sb.toString());
-                bindTexture(newTexture);
+        if (texture.getPath().startsWith("textures/gui/container/")) {
+            int insertPos = texture.getPath().indexOf("container/") + 10;
+            StringBuilder sb = new StringBuilder(texture.getPath());
+            sb.insert(insertPos, "fixed_");
+            Identifier newTexture = Identifier.ofVanilla(sb.toString());
+            bindTexture(newTexture);
         }
     }
 

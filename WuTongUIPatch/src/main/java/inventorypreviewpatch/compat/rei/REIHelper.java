@@ -13,7 +13,17 @@ import java.util.List;
 import static inventorypreviewpatch.render.CheatSheetOverlay.isTriggered;
 
 public class REIHelper implements REIClientPlugin {
-//为小抄适配REI
+    private static void registerExclusionZonesFrame(Class<? extends Screen> screenClass, ExclusionZones zones, int x, int y, int width, int height) {
+        zones.register(screenClass, provider -> {
+            List<Rectangle> areas = new ArrayList<>();
+            if (isTriggered(provider)) {
+                areas.add(new Rectangle(GuiUtils.getScaledWindowWidth() / 2 + x, GuiUtils.getScaledWindowHeight() / 2 + y, width, height));
+            }
+            return areas;
+        });
+    }
+
+    //为小抄适配REI
     @Override
     public void registerExclusionZones(ExclusionZones zones) {
 
@@ -23,16 +33,6 @@ public class REIHelper implements REIClientPlugin {
         registerExclusionZonesFrame(SmithingScreen.class, zones, 50, -80, 185, 160);
         registerExclusionZonesFrame(AnvilScreen.class, zones, 50, -80, 110, 160);
 
-    }
-
-    private static void registerExclusionZonesFrame(Class<? extends Screen> screenClass, ExclusionZones zones, int x, int y, int width, int height) {
-        zones.register(screenClass, provider-> {
-            List<Rectangle> areas = new ArrayList<>();
-            if (isTriggered(provider)) {
-            areas.add(new Rectangle(GuiUtils.getScaledWindowWidth() / 2 + x, GuiUtils.getScaledWindowHeight() / 2 + y, width, height));
-            }
-            return areas;
-        });
     }
 
 }

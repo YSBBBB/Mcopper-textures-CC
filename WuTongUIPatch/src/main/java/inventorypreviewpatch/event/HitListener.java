@@ -13,17 +13,16 @@ import net.minecraft.world.World;
 public class HitListener {
 
     private static final HitListener INSTANCE = new HitListener();
-
-    public static HitListener getInstance() {
-        return INSTANCE;
-    }
-
     public LivingEntity player;
     public BlockPos pos;
     public Hand hand;
     public BlockEntity blockEntity;
     public Entity entity;
     public World world;
+
+    public static HitListener getInstance() {
+        return INSTANCE;
+    }
 
     public void getHitBlockResult() {
         UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
@@ -32,12 +31,13 @@ public class HitListener {
             this.hand = hand;
             this.world = world;
             this.blockEntity = world.getBlockEntity(pos);
-            //清除Entity的缓存
+            //清除entity的缓存
             this.entity = null;
             return ActionResult.PASS;
         });
 
     }
+
     public void getHitEntityResult() {
         UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
             this.player = player;

@@ -1,5 +1,7 @@
 package inventorypreviewpatch;
 
+import fi.dy.masa.malilib.interfaces.IDataSyncer;
+import fi.dy.masa.minihud.data.EntitiesDataManager;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -16,6 +18,14 @@ public class ModUtils {
         return isGenericScreen;
     }
 
+    //同步器，借鉴于malilib
+    public static IDataSyncer getDataSyncer(IDataSyncer syncer) {
+        if (syncer == null) {
+            syncer = EntitiesDataManager.getInstance();
+        }
+        return syncer;
+    }
+
     //render
 
     public static void drawTexturedRectBatched(int x, int y, int u, int v, int width, int height, float pixelWidth, BufferBuilder buffer) {
@@ -23,7 +33,7 @@ public class ModUtils {
     }
 
     public static void drawTexturedRectBatched(int x, int y, int u, int v, int width, int height, float zLevel, float pixelWidth, BufferBuilder buffer) {
-        //pixelWidth即像素宽度可以是1.0与材质文件边长的比值
+        //pixelWidth即像素宽度应为1.0与材质文件边长的比值
         if (pixelWidth == 0) pixelWidth = 0.00390625F;
 
         buffer.vertex(x, y + height, zLevel).texture(u * pixelWidth, (v + height) * pixelWidth);

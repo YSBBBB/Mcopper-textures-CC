@@ -8,12 +8,12 @@ import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 
 public class ResourcesLoadedListener {
+    private static final ResourcesLoadedListener INSTANCE = new ResourcesLoadedListener();
     public static boolean isLoadedWuTongUI;
     public static boolean isLoadedMcopper;
     public static boolean isChinese;
     public static boolean isEN_US;
 
-    private static final ResourcesLoadedListener INSTANCE = new ResourcesLoadedListener();
     public static ResourcesLoadedListener getInstance() {
         return INSTANCE;
     }
@@ -27,10 +27,8 @@ public class ResourcesLoadedListener {
             isLoadedWuTongUI = minecraftClient.getResourceManager().getResource(WuTongUI_ID).isPresent();
             isChinese = (language.equals("zh_cn")) || (language.equals("zh_hk")) || (language.equals("zh_tw"));
             isEN_US = language.equals("en_us");
-
             ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(
                     new SimpleSynchronousResourceReloadListener() {
-
                         @Override
                         public void reload(ResourceManager manager) {
                             isLoadedMcopper = minecraftClient.getResourceManager().getResource(Mcopper_ID).isPresent();
@@ -48,5 +46,4 @@ public class ResourcesLoadedListener {
             );
         }));
     }
-
 }
