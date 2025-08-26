@@ -8,13 +8,14 @@ import inventorypreviewpatch.event.ResourcesLoadedListener;
 import inventorypreviewpatch.interfaces.ModIRenderer;
 import inventorypreviewpatch.render.RenderHandler;
 
-public class InitHandler
-{
+public class InitHandler {
     private static final InitHandler INSTANCE = new InitHandler();
-    public static InitHandler getInstance() {return INSTANCE;}
 
-    public void registerModHandlers()
-    {
+    public static InitHandler getInstance() {
+        return INSTANCE;
+    }
+
+    public void registerModHandlers() {
         Configs.ConfigsRegister();
 
         HitListener.getInstance().getHitBlockResult();
@@ -26,6 +27,6 @@ public class InitHandler
         RenderEventHandler.getInstance().registerGameOverlayRenderer(modRenderer);
         ModRenderEventHandler.getInstance().registerRendererAfterScreenOverlay(modRenderer);
         ModRenderEventHandler.getInstance().registerRendererBeforeScreenOverlay(modRenderer);
-
     }
+
 }

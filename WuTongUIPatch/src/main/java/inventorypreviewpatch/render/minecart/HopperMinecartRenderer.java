@@ -43,7 +43,7 @@ public class HopperMinecartRenderer extends AbstractMinecartEntityRenderer<Hoppe
     public void updateRenderState(HopperMinecartEntity hopperMinecartEntity, HopperMinecartEntityRenderState hopperMinecartEntityRenderState, float f) {
         super.updateRenderState(hopperMinecartEntity, hopperMinecartEntityRenderState, f);
         //寻常方法不管用，使用malilib库
-        if (RENDER_LOCKED_HOPPER_MINECART. getBooleanValue()) {
+        if (RENDER_LOCKED_HOPPER_MINECART.getBooleanValue()) {
             World world = WorldUtils.getBestWorld(MinecraftClient.getInstance());
             NbtCompound nbt = new NbtCompound();
             Pair<Entity, NbtCompound> pair = ModUtils.getDataSyncer(null).requestEntity(world, hopperMinecartEntity.getId());

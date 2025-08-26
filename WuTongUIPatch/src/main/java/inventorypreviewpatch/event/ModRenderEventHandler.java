@@ -42,15 +42,14 @@ public class ModRenderEventHandler {
     /**
      * 为{@link ModIRenderer#onRenderBeforeScreenOverlay}
      * 方法注册一个渲染器
-     * 其在原版Screen渲染完成后调用
+     * 其在原版Screen渲染完成前调用
      *
      * @param renderer
      */
 
     public void registerRendererBeforeScreenOverlay(ModIRenderer renderer) {
-        ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) ->
-                ScreenEvents.beforeRender(screen).register((screen1, drawContext, mouseX, mouseY, tickDelta) ->
-                        renderer.onRenderBeforeScreenOverlay(drawContext, mouseX, mouseY, tickDelta)
-                ));
+        ScreenEvents.BEFORE_INIT.register((client, screen, scaledWidth, scaledHeight) ->
+                renderer.onRenderBeforeScreenOverlay(client, screen)
+        );
     }
 }

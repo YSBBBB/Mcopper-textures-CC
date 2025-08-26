@@ -35,41 +35,6 @@ public class Configs implements IConfigHandler {
         );
     }
 
-    public static class Generic {
-
-        public static final ConfigBoolean DISPLAY_FURNACE_PROGRESS = new ConfigBoolean("DisplayFurnaceProgress", false, translate("DisplayFurnaceProgress")).apply(GENERIC_KEY);
-        public static final ConfigBoolean DISPLAY_BREWING_STAND_PROGRESS = new ConfigBoolean("DisplayBrewingStandProgress", false, translate("DisplayBrewingStandProgress")).apply(GENERIC_KEY);
-        public static final ConfigBoolean DISPLAY_TRAPPED_CHEST_TITLE = new ConfigBoolean("DisplayTrappedChestTitle", false, translate("DisplayTrappedChestTitle")).apply(GENERIC_KEY);
-        public static final ConfigBoolean RENDER_LOCKED_HOPPER_MINECART = new ConfigBoolean("RenderLockedHopperMinecart", false, translate("RenderLockedHopperMinecart")).apply(GENERIC_KEY);
-        public static final ConfigBoolean Creeper_Forewarn = new ConfigBoolean("CreeperForewarn", false, translate("CreeperForewarn")).apply(GENERIC_KEY);
-        public static final ConfigOptionList Display_Container_Title_Mode = new ConfigOptionList("DisplayContainerTitleMode", DisplayContainerTitleMode.VANILLA).apply(GENERIC_KEY);
-        public static final ConfigOptionList Display_PlayInventory_Title_Mode = new ConfigOptionList("DisplayPlayInventoryTitleMode", DisplayPlayInventoryTitleMode.VANILLA).apply(GENERIC_KEY);
-        public static final ConfigOptionList Render_Shulkerbox_Color_Mode = new ConfigOptionList("RenderShulkerboxColorMode", RenderShulkerboxColorMode.NO).apply(GENERIC_KEY);
-        public static final ConfigOptionList Use_Cheat_Sheet = new ConfigOptionList("CheatSheetDisplayerMode", CheatSheetDisplayerMode.BrewingStand, translate("CheatSheetDisplayerMode")).apply(GENERIC_KEY);
-
-        public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
-                Use_Cheat_Sheet,
-                Creeper_Forewarn,
-                DISPLAY_FURNACE_PROGRESS,
-                DISPLAY_BREWING_STAND_PROGRESS,
-                DISPLAY_TRAPPED_CHEST_TITLE,
-                RENDER_LOCKED_HOPPER_MINECART,
-                Display_Container_Title_Mode,
-                Display_PlayInventory_Title_Mode,
-                Render_Shulkerbox_Color_Mode
-        );
-    }
-
-    public static class Fixes {
-        public static final ConfigOptionList Inventory_Preview_Fix_Mode         = new ConfigOptionList("InventoryPreviewFixMode", InventoryPreviewFixMode.VANILLA).apply(Fixes_KEY);
-        public static final ConfigBoolean BARREL_FIXES = new ConfigBoolean("BarrelFixes", true, translate("BarrelFixes")).apply(Fixes_KEY);
-
-        public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
-                Inventory_Preview_Fix_Mode,
-                BARREL_FIXES
-        );
-    }
-
     public static void loadFromFile() {
         Path configFile = FileUtils.getConfigDirectoryAsPath().resolve(CONFIG_FILE_NAME);
 
@@ -113,4 +78,39 @@ public class Configs implements IConfigHandler {
         saveToFile();
     }
 
+    public static class Generic {
+
+        public static final ConfigBoolean DISPLAY_FURNACE_PROGRESS = new ConfigBoolean("DisplayFurnaceProgress", false, translate("DisplayFurnaceProgress")).apply(GENERIC_KEY);
+        public static final ConfigBoolean DISPLAY_BREWING_STAND_PROGRESS = new ConfigBoolean("DisplayBrewingStandProgress", false, translate("DisplayBrewingStandProgress")).apply(GENERIC_KEY);
+        public static final ConfigBoolean DISPLAY_TRAPPED_CHEST_TITLE = new ConfigBoolean("DisplayTrappedChestTitle", false, translate("DisplayTrappedChestTitle")).apply(GENERIC_KEY);
+        public static final ConfigBoolean RENDER_LOCKED_HOPPER_MINECART = new ConfigBoolean("RenderLockedHopperMinecart", false, translate("RenderLockedHopperMinecart")).apply(GENERIC_KEY);
+        public static final ConfigBoolean Creeper_Forewarn = new ConfigBoolean("CreeperForewarn", false, translate("CreeperForewarn")).apply(GENERIC_KEY);
+        public static final ConfigOptionList Display_Container_Title_Mode = new ConfigOptionList("DisplayContainerTitleMode", DisplayContainerTitleMode.VANILLA).apply(GENERIC_KEY);
+        public static final ConfigOptionList Display_PlayInventory_Title_Mode = new ConfigOptionList("DisplayPlayInventoryTitleMode", DisplayPlayInventoryTitleMode.VANILLA).apply(GENERIC_KEY);
+        public static final ConfigOptionList Render_Shulkerbox_Color_Mode = new ConfigOptionList("RenderShulkerboxColorMode", RenderShulkerboxColorMode.NO).apply(GENERIC_KEY);
+        public static final ConfigOptionList Use_Cheat_Sheet = new ConfigOptionList("CheatSheetDisplayerMode", CheatSheetDisplayerMode.BREWING_STAND, translate("CheatSheetDisplayerMode")).apply(GENERIC_KEY);
+
+        public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
+                Use_Cheat_Sheet,
+                Creeper_Forewarn,
+                DISPLAY_FURNACE_PROGRESS,
+                DISPLAY_BREWING_STAND_PROGRESS,
+                DISPLAY_TRAPPED_CHEST_TITLE,
+                RENDER_LOCKED_HOPPER_MINECART,
+                Display_Container_Title_Mode,
+                Display_PlayInventory_Title_Mode,
+                Render_Shulkerbox_Color_Mode
+        );
+    }
+
+    public static class Fixes {
+        public static final ConfigOptionList Inventory_Preview_Fix_Mode = new ConfigOptionList("InventoryPreviewFixMode", InventoryPreviewFixMode.NO).apply(Fixes_KEY);
+        public static final ConfigBoolean BARREL_FIXES = new ConfigBoolean("BarrelFixes", false, translate("BarrelFixes")).apply(Fixes_KEY);
+        public static final ConfigBoolean PREVENT_PREVIEWING_OWN_BACKPACK = new ConfigBoolean("PreventPreviewingOwnBackpack", false, translate("PreventPreviewingOwnBackpack")).apply(Fixes_KEY);
+        public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
+                PREVENT_PREVIEWING_OWN_BACKPACK,
+                Inventory_Preview_Fix_Mode,
+                BARREL_FIXES
+        );
+    }
 }

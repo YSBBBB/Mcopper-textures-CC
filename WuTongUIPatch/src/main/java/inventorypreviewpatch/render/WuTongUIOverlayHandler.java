@@ -28,7 +28,7 @@ import static net.minecraft.screen.ScreenHandlerType.GENERIC_9X3;
 import static net.minecraft.screen.ScreenHandlerType.GENERIC_9X6;
 
 public class WuTongUIOverlayHandler {
-
+    //一个渲染的框架
     public static void renderFrame(InventoryOverlay.InventoryRenderType type, BlockEntity be, int x, int y, int slotsPerRow, int totalSlots, int form) {
         RenderUtils.setupBlend();
         Tessellator tessellator = Tessellator.getInstance();
@@ -56,8 +56,6 @@ public class WuTongUIOverlayHandler {
     }
 
     public static <T> void drawTitle(DrawContext drawContext, Screen screen, T containerEntity) {
-
-        if (!isLoadedWuTongUI) return;
         int color = 4210752;
         TextRenderer textRenderer = screen.getTextRenderer();
         int rows = screen instanceof GenericContainerScreen screen2 ? screen2.getScreenHandler().getRows() : 0;
@@ -69,7 +67,6 @@ public class WuTongUIOverlayHandler {
             Text playerInventoryTitle = Text.translatable("key.categories.inventory");
             drawContext.drawText(textRenderer, playerInventoryTitle, titleX, playerInventoryTitleY, color, false);
         }
-
         //容器
         if (Display_Container_Title_Mode.getStringValue().equals("all")) {
             Text title = null;
@@ -88,7 +85,6 @@ public class WuTongUIOverlayHandler {
             }
             drawContext.drawText(textRenderer, title, titleX, titleY, color, false);
         }
-
     }
 
     public static <T> void setTitle(Screen screen, T containerEntity) {
@@ -127,12 +123,11 @@ public class WuTongUIOverlayHandler {
                     return;
                 }
             }
-
-            if (Display_Container_Title_Mode.getStringValue().equals("no")) {
-                //用 访问加宽器 修改title（这个版本我找不到setTitle()方法
+            //防止显示所有标题功能让容器有2个标题
+            if (Display_Container_Title_Mode.getStringValue().equals("no") || Display_Container_Title_Mode.getStringValue().equals("all")) {
+                //用 访问加宽器 修改title
                 screen.title = Text.translatable("inventorypreviewpatch.blank.title");
             }
         }
     }
-
 }

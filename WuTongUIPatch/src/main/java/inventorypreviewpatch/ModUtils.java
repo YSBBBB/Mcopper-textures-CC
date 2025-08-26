@@ -19,10 +19,8 @@ public class ModUtils {
     }
 
     //同步器，借鉴于malilib
-    public static IDataSyncer getDataSyncer(IDataSyncer syncer)
-    {
-        if (syncer == null)
-        {
+    public static IDataSyncer getDataSyncer(IDataSyncer syncer) {
+        if (syncer == null) {
             syncer = EntitiesDataManager.getInstance();
         }
         return syncer;

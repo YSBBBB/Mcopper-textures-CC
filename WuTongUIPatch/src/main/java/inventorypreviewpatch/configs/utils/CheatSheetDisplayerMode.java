@@ -3,44 +3,52 @@ package inventorypreviewpatch.configs.utils;
 import fi.dy.masa.malilib.config.IConfigOptionListEntry;
 import fi.dy.masa.malilib.util.StringUtils;
 
-public enum CheatSheetDisplayerMode implements IConfigOptionListEntry{
-    NO             ("no",            "inventorypreviewpatch.label.CheatSheetDisplayerMode.no")  ,
-    ALL            ("all",           "inventorypreviewpatch.label.CheatSheetDisplayerMode.all") ,
-    BrewingStand   ("brewingStand",  "inventorypreviewpatch.label.CheatSheetDisplayerMode.brewingStand"  ),
-    CUSTOMIZATION  ("customization", "inventorypreviewpatch.label.CheatSheetDisplayerMode.customize") ,
+public enum CheatSheetDisplayerMode implements IConfigOptionListEntry {
+    NO             ("no", "inventorypreviewpatch.label.CheatSheetDisplayerMode.no"),
+    ALL            ("all", "inventorypreviewpatch.label.CheatSheetDisplayerMode.all"),
+    BREWING_STAND  ("brewingStand", "inventorypreviewpatch.label.CheatSheetDisplayerMode.brewingStand"),
+    CUSTOMIZATION  ("customization", "inventorypreviewpatch.label.CheatSheetDisplayerMode.customize"),
 
     ;
 
     private final String configString;
     private final String unlocName;
 
-    CheatSheetDisplayerMode(String configString, String unlocName)
-    {
+    CheatSheetDisplayerMode(String configString, String unlocName) {
         this.configString = configString;
         this.unlocName = unlocName;
     }
 
-    @Override
-    public String getStringValue() {return this.configString;}
+    public static CheatSheetDisplayerMode fromStringStatic(String name) {
+        for (CheatSheetDisplayerMode mode : CheatSheetDisplayerMode.values()) {
+            if (mode.configString.equalsIgnoreCase(name)) {
+                return mode;
+            }
+        }
+
+        return CheatSheetDisplayerMode.NO;
+    }
 
     @Override
-    public String getDisplayName() {return StringUtils.translate(this.unlocName);}
+    public String getStringValue() {
+        return this.configString;
+    }
+
+    @Override
+    public String getDisplayName() {
+        return StringUtils.translate(this.unlocName);
+    }
 
     @Override
     public IConfigOptionListEntry cycle(boolean forward) {
         int id = this.ordinal();
 
-        if (forward)
-        {
-            if (++id >= values().length)
-            {
+        if (forward) {
+            if (++id >= values().length) {
                 id = 0;
             }
-        }
-        else
-        {
-            if (--id < 0)
-            {
+        } else {
+            if (--id < 0) {
                 id = values().length - 1;
             }
         }
@@ -49,22 +57,8 @@ public enum CheatSheetDisplayerMode implements IConfigOptionListEntry{
     }
 
     @Override
-    public CheatSheetDisplayerMode fromString(String name)
-    {
+    public CheatSheetDisplayerMode fromString(String name) {
         return fromStringStatic(name);
-    }
-
-    public static CheatSheetDisplayerMode fromStringStatic(String name)
-    {
-        for (CheatSheetDisplayerMode mode : CheatSheetDisplayerMode.values())
-        {
-            if (mode.configString.equalsIgnoreCase(name))
-            {
-                return mode;
-            }
-        }
-
-        return CheatSheetDisplayerMode.NO;
     }
 
 }

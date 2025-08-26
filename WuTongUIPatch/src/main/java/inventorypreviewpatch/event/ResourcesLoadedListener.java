@@ -8,12 +8,12 @@ import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 
 public class ResourcesLoadedListener {
+    private static final ResourcesLoadedListener INSTANCE = new ResourcesLoadedListener();
     public static boolean isLoadedWuTongUI;
     public static boolean isLoadedMcopper;
     public static boolean isChinese;
     public static boolean isEN_US;
 
-    private static final ResourcesLoadedListener INSTANCE = new ResourcesLoadedListener();
     public static ResourcesLoadedListener getInstance() {
         return INSTANCE;
     }

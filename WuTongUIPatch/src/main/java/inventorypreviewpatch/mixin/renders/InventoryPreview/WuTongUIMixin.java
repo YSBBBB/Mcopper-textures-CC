@@ -13,17 +13,15 @@ import static inventorypreviewpatch.render.WuTongUIOverlayHandler.renderFrame;
 
 @Mixin(value = InventoryOverlay.class)
 public class WuTongUIMixin {
+
     @Inject(method = "renderInventoryBackground", at = @At("HEAD"), cancellable = true)
     private static void renderInventoryBackground(InventoryOverlay.InventoryRenderType type, int x, int y, int slotsPerRow, int totalSlots, MinecraftClient mc, CallbackInfo ci) {
-        if (Inventory_Preview_Fix_Mode.getStringValue() .equals("wutong") && isLoadedWuTongUI) {
+        if (Inventory_Preview_Fix_Mode.getStringValue().equals("wutong") && isLoadedWuTongUI) {
             //熔炉的GUI不在这渲染
-
             if (type == InventoryOverlay.InventoryRenderType.FURNACE) return;
-
             ci.cancel();
             renderFrame(type, null, x, y, slotsPerRow, totalSlots, 1);
         }
     }
-
 }
 

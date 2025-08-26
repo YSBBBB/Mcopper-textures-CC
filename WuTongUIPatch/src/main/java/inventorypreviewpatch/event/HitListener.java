@@ -13,17 +13,16 @@ import net.minecraft.world.World;
 public class HitListener {
 
     private static final HitListener INSTANCE = new HitListener();
-
-    public static HitListener getInstance() {
-        return INSTANCE;
-    }
-
     public LivingEntity player;
     public BlockPos pos;
     public Hand hand;
     public BlockEntity blockEntity;
     public Entity entity;
     public World world;
+
+    public static HitListener getInstance() {
+        return INSTANCE;
+    }
 
     public void getHitBlockResult() {
         UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
@@ -38,6 +37,7 @@ public class HitListener {
         });
 
     }
+
     public void getHitEntityResult() {
         UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
             this.player = player;

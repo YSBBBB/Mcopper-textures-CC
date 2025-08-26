@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import static inventorypreviewpatch.Reference.MOD_ID;
 
-public class WuTongUIPatch implements ModInitializer{
+public class WuTongUIPatch implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     @Override
