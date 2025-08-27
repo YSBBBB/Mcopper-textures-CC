@@ -9,5 +9,5 @@ public class Reference {
     public static final String MOD_NAME = "WuTongUI Patch";
     public static final String MOD_VERSION = StringUtils.getModVersionString(MOD_ID);
     public static final String MC_VERSION = MinecraftVersion.CURRENT.getName();
-    public static final String MOD_STRING = MOD_ID + "_" + MOD_VERSION + "+" + MC_VERSION;
+    public static final String MOD_STRING = MOD_ID + "-" + MOD_VERSION + "+" + MC_VERSION;
 }

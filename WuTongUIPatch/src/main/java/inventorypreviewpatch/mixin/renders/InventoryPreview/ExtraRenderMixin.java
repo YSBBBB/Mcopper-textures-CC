@@ -31,6 +31,10 @@ import static inventorypreviewpatch.render.WuTongUIOverlayHandler.renderFrame;
 public class ExtraRenderMixin {
 
     @Unique
+    private static final Identifier MINECART = Identifier.ofVanilla("textures/font/b118.png");
+    @Unique
+    private static final Identifier BOAT = Identifier.ofVanilla("textures/font/b117.png");
+    @Unique
     private static final MinecraftClient mc = MinecraftClient.getInstance();
     @Unique
     public boolean shulkerBGColors;
@@ -52,8 +56,8 @@ public class ExtraRenderMixin {
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     public void renderAtHead(DrawContext drawContext, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         //防止某些情况下预览到玩家自己的背包(通常是玩家移动速度过快或前后速度差过大时)，该功能不会影响背包预览
-        if (PREVENT_PREVIEWING_OWN_BACKPACK.getBooleanValue()) {
-            if (previewData != null && mc.player != null && previewData.entity() != null) {
+        if (PREVENT_PREVIEWING_OWN_BACKPACK.getBooleanValue() && previewData != null) {
+            if (previewData.entity() != null && mc.player != null) {
                 if (previewData.entity().getUuid().equals(mc.player.getUuid())) {
                     ci.cancel();
                 }
@@ -66,31 +70,31 @@ public class ExtraRenderMixin {
         MethodExecuteHelper.startExecute("inventory_preview", -1);  //判断该方法是否正在执行
         if (previewData != null) {
             BlockEntity be = previewData.be();
-            NbtCompound nbt = previewData.nbt();
+            NbtCompound nbt = previewData.nbt() != null ? previewData.nbt() : new NbtCompound();
+            System.out.println(nbt);
             final int xCenter = GuiUtils.getScaledWindowWidth() / 2;
             final int yCenter = GuiUtils.getScaledWindowHeight() / 2;
             int totalSlots = previewData.inv() == null ? 0 : previewData.inv().size();
             //减少一个条件判断，因为后续方法中inv为null并没有什么影响
-            if (totalSlots > 0/* && previewData.inv() != null*/) {
-                final InventoryRenderType type = getBestInventoryType(previewData.inv(), previewData.nbt() != null ? previewData.nbt() : new NbtCompound(), previewData);
+            if (totalSlots > 0 /*&& previewData.inv() != null*/) {
+                final InventoryRenderType type = getBestInventoryType(previewData.inv(), nbt, previewData);
                 final InventoryProperties props = getInventoryPropsTemp(type, totalSlots);
                 int xInv = xCenter - (props.width / 2);
                 int yInv = yCenter - props.height - 6;
                 //船和矿车
                 if (Inventory_Preview_Fix_Mode.getStringValue().equals("wutong") && ResourcesLoadedListener.isLoadedWuTongUI) {
-                    if (be == null && nbt != null && nbt.contains("id")) {
-                        Identifier MINECART = Identifier.ofVanilla("textures/font/b118.png");
-                        Identifier BOAT = Identifier.ofVanilla("textures/font/b117.png");
+                    if (be == null && nbt.contains("id")) {
                         if (nbt.getString("id").equals("minecraft:chest_minecart")) {
                             renderFrame(null, null, xInv, yInv, 0, 27, 2);
                             drawContext.drawTexture(RenderLayer::getGuiTextured, MINECART, xCenter - 8, yCenter - 83, 0.0F, 0.0F, 16, 16, 16, 16);
+                            renderInventoryStacks(type, previewData.inv(), xInv + props.slotOffsetX, yInv + props.slotOffsetY, props.slotsPerRow, 0, totalSlots, new HashSet<>(), mc, drawContext, mouseX, mouseY);
                         } else if (nbt.getString("id").equals("minecraft:hopper_minecart")) {
                             drawContext.drawTexture(RenderLayer::getGuiTextured, MINECART, xCenter - 8, yCenter - 49, 0.0F, 0.0F, 16, 16, 16, 16);
                         } else if (nbt.getString("id").equals("minecraft:bamboo_chest_raft") || nbt.getString("id").equals("minecraft:oak_chest_boat")) {
                             renderFrame(null, null, xInv, yInv, 0, 27, 2);
                             drawContext.drawTexture(RenderLayer::getGuiTextured, BOAT, xCenter - 8, yCenter - 83, 0.0F, 0.0F, 16, 16, 16, 16);
+                            renderInventoryStacks(type, previewData.inv(), xInv + props.slotOffsetX, yInv + props.slotOffsetY, props.slotsPerRow, 0, totalSlots, new HashSet<>(), mc, drawContext, mouseX, mouseY);
                         }
-                        renderInventoryStacks(type, previewData.inv(), xInv + props.slotOffsetX, yInv + props.slotOffsetY, props.slotsPerRow, 0, totalSlots, new HashSet<>(), mc, drawContext, mouseX, mouseY);
                         return;
                     }
                     //方块实体

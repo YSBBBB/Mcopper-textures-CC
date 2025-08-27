@@ -8,10 +8,7 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.BrewingStandScreen;
-import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.screen.ingame.HopperScreen;
+import net.minecraft.client.gui.screen.ingame.*;
 import net.minecraft.client.render.*;
 import net.minecraft.entity.vehicle.AbstractBoatEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
@@ -64,6 +61,9 @@ public class WuTongUIOverlayHandler {
         //物品栏标题
         if (Display_PlayInventory_Title_Mode.getStringValue().equals("all")) {
             int playerInventoryTitleY = (screen.getNavigationFocus().height() - (backgroundHeight)) / 2 + backgroundHeight - 94;
+            if (screen instanceof HorseScreen) {
+                playerInventoryTitleY += 27;
+            }
             Text playerInventoryTitle = Text.translatable("key.categories.inventory");
             drawContext.drawText(textRenderer, playerInventoryTitle, titleX, playerInventoryTitleY, color, false);
         }

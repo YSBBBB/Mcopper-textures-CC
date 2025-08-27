@@ -37,6 +37,7 @@ public class RenderHandler implements ModIRenderer {
             BlockEntity blockEntity = HitListener.getInstance().blockEntity;
             Entity entity = HitListener.getInstance().entity;
             var containerEntity = blockEntity != null ? blockEntity : entity;
+            assert currentscreen != null;
             WuTongUIOverlayHandler.drawTitle(drawContext, currentscreen, containerEntity);
             //绘制小抄
             CheatSheetOverlay.renderCheatSheet(drawContext, currentscreen, x, y);
