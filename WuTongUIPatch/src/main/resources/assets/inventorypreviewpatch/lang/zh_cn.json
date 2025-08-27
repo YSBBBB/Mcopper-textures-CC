@@ -22,8 +22,8 @@
   "inventorypreviewpatch.config.generic.name.RenderLockedHopperMinecart": "渲染锁住的漏斗矿车",
   "inventorypreviewpatch.config.generic.comment.RenderLockedHopperMinecart": "启用该设置可以让漏斗矿车载被锁住时使车载的漏斗渲染对应的纹理，而不是始终渲染没被锁的漏斗)",
   "inventorypreviewpatch.config.generic.name.CreeperForewarn": "苦力怕预警",
+  "inventorypreviewpatch.config.generic.comment.CreeperForewarn": "开启时会根据苦力怕的不同状态绘制不同的图案\n初级预警:玩家16格距离内存在苦力怕\n危险预警:玩家8格距离内存在苦力怕或16格范围内存在至少4只苦力怕\n爆炸预警:苦力怕快要爆炸时(或苦力怕的当前保险丝时间增加时)\n高压预警:玩家16格范围内存在高压苦力怕\n不太状态的效果可以叠加",
 
-  "inventorypreviewpatch.config.generic.comment.CreeperForewarn": "开启时会根据苦力怕的不同状态绘制不同的图案\n初级预警:玩家16格距离内存在苦力怕\n危险预警:玩家8格距离内存在苦力怕\n爆炸预警:苦力怕快要爆炸时(或苦力怕的当前保险丝时间增加时)\n高压预警:玩家16格范围内存在高压苦力怕\n不太状态的效果可以叠加",
   "inventorypreviewpatch.config.generic.name.DisplayContainerTitleMode": "容器标题显示方式",
   "inventorypreviewpatch.config.generic.comment.DisplayContainerTitleMode": "根据设置使用不同的方式显示容器标题\n空白容器标题: 让玩家在打开容器时不显示烦人的标题\n原版: 不进行修改\n显示所有容器的标题: 载入梧桐UI会只让修改了名称的容器显示标题,该模式可以显示所有容器的标题 ",
   "inventorypreviewpatch.label.DisplayContainerTitleMode.no": "空白容器标题",

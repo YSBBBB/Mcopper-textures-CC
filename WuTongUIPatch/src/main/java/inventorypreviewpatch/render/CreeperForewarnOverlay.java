@@ -12,6 +12,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.predicate.entity.EntityPredicates;
@@ -19,7 +20,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 
-import java.util.List;
+import java.util.*;
 import java.util.random.RandomGenerator;
 import java.util.random.RandomGeneratorFactory;
 
@@ -32,6 +33,7 @@ public class CreeperForewarnOverlay {
     private static final Identifier TEXTURE_CREEPER_CHARGED = Identifier.ofVanilla("textures/entity/creeper/creeper_armor.png");
     private static final Identifier TEXTURE_CREEPER_EXPLODE = Identifier.of("inventorypreviewpatch", "textures/entity/creeper/creeper_explode.png");
     private static final RandomGenerator generator = RandomGeneratorFactory.of("L32X64MixRandom").create();
+    private static final EntityType<CreeperEntity> CREEPER_TYPE = EntityType.CREEPER;
     private static boolean Forewarn = false;//初级预警
     private static boolean Emergency = false;//危险预警
     private static boolean AboutToExplode = false;//爆炸预警
@@ -52,18 +54,20 @@ public class CreeperForewarnOverlay {
             //如果检测到苦力怕，则提高检查频率
             if (Forewarn ? ticks % 4 == 0 : ticks % 8 == 0) {
                 Box largeBox = new Box(player.getBlockPos()).expand(16);
-                List<CreeperEntity> allCreeper = world.getEntitiesByClass(CreeperEntity.class, largeBox, EntityPredicates.VALID_ENTITY);
-                Forewarn = !allCreeper.isEmpty();
 
+                List<CreeperEntity> allCreeper = List.copyOf(world.getEntitiesByType(CREEPER_TYPE, largeBox, EntityPredicates.VALID_ENTITY));
+
+                Forewarn = !allCreeper.isEmpty();
                 if (Forewarn) {
-                    Box smallBox = new Box(player.getBlockPos()).expand(8);
-                    List<CreeperEntity> lessCreeper = world.getEntitiesByClass(CreeperEntity.class, smallBox, EntityPredicates.VALID_ENTITY);
-                    Emergency = !lessCreeper.isEmpty();
                     //直接赋值容易受到其他苦力怕影响,计数器赋值更加灵活
+                    int counter_Emergency = 0;
                     int counter_ToExplode = 0;
                     int counter_IsCharged = 0;
                     for (CreeperEntity creeper : allCreeper) {
-                        //系数大可以让预警更及时
+                        //系数大可以让预警更及时(如果存在直接退出)
+                        if (creeper.distanceTo(player) <= 8) {
+                            counter_Emergency ++;
+                        }
                         if (creeper.getClientFuseTime(partialTicks) * 30 > 6) {
                             counter_ToExplode++;
                         }
@@ -71,6 +75,7 @@ public class CreeperForewarnOverlay {
                             counter_IsCharged++;
                         }
                     }
+                    Emergency = counter_Emergency > 0 || allCreeper.size() > 3;
                     AboutToExplode = counter_ToExplode > 0;
                     IsCharged = counter_IsCharged > 0;
                 } else {
@@ -81,18 +86,16 @@ public class CreeperForewarnOverlay {
 
             if (Forewarn) {
                 if (AboutToExplode) {
-                    if (ticks % 5 == 0) {
+                    if (ticks % 3 == 0) {
                         IsFlash = !IsFlash;
                     }
                 } else {
                     IsFlash = false;
                 }
-                if (IsCharged) {
+                if (IsCharged && ticks % 2 == 0) {
                     //用随机数生成弄个动态的高压背景
-                    if (ticks % 2 == 0) {
-                        charged_u = generator.nextInt(128);
-                        charged_v = generator.nextInt(64);
-                    }
+                    charged_u = generator.nextInt(128);
+                    charged_v = generator.nextInt(64);
                 }
             }
         }

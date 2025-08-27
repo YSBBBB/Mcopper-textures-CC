@@ -26,8 +26,7 @@ public class ModUtils {
         return syncer;
     }
 
-    //render
-
+    //渲染
     public static void drawTexturedRectBatched(int x, int y, int u, int v, int width, int height, float pixelWidth, BufferBuilder buffer) {
         drawTexturedRectBatched(x, y, u, v, width, height, 0, pixelWidth, buffer);
     }
