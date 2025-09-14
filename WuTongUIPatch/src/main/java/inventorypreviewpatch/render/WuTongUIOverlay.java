@@ -23,6 +23,8 @@ import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.vehicle.*;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
@@ -211,9 +213,11 @@ public class WuTongUIOverlay {
                         if (subObject.has("id")) {
                             int width = subObject.has("width") ? subObject.get("width").getAsInt() : 256;
                             int height = subObject.has("height") ? subObject.get("height").getAsInt() : 256;
+                            int textureWidth = subObject.has("textureWidth") ? subObject.get("textureWidth").getAsInt() : 256;
+                            int textureHeight = subObject.has("textureHeight") ? subObject.get("textureHeight").getAsInt() : 256;
                             int x_offset = subObject.has("x_offset") ? subObject.get("x_offset").getAsInt() : 0;
                             int y_offset = subObject.has("y_offset") ? subObject.get("y_offset").getAsInt() : 0;
-                            map.put(subObject.get("id").getAsString(), new int[]{width, height, x_offset, y_offset});
+                            map.put(subObject.get("id").getAsString(), new int[]{x_offset, y_offset, width, height, textureWidth, textureHeight});
                         }
                     }
                 }
@@ -250,7 +254,9 @@ public class WuTongUIOverlay {
                     if (render_correction.containsKey(id)) {
                         correction = render_correction.get(id);
                     }
-                    drawContext.drawTexture(RenderLayer::getGuiTextured, texture, correction[2], correction[3], 0.0F, 0.0F, 256, 256, correction[0], correction[1]);
+                    x = x - (correction[2]/2) + correction[0];
+                    y = y - (correction[3]/2) - correction[1];
+                    drawContext.drawTexture(RenderLayer::getGuiTextured, texture, x, y, 0.0F, 0.0F, correction[2], correction[3], correction[4], correction[5]);
                 }
             } else {
                 InventoryOverlay.renderInventoryBackground(type, x, y, slotsPerRow, totalSlots, mc);
