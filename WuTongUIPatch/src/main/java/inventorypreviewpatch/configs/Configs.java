@@ -84,33 +84,35 @@ public class Configs implements IConfigHandler {
         public static final ConfigBoolean DISPLAY_BREWING_STAND_PROGRESS = new ConfigBoolean("DisplayBrewingStandProgress", false, translate("DisplayBrewingStandProgress")).apply(GENERIC_KEY);
         public static final ConfigBoolean DISPLAY_TRAPPED_CHEST_TITLE = new ConfigBoolean("DisplayTrappedChestTitle", false, translate("DisplayTrappedChestTitle")).apply(GENERIC_KEY);
         public static final ConfigBoolean RENDER_LOCKED_HOPPER_MINECART = new ConfigBoolean("RenderLockedHopperMinecart", false, translate("RenderLockedHopperMinecart")).apply(GENERIC_KEY);
-        public static final ConfigBoolean Creeper_Forewarn = new ConfigBoolean("CreeperForewarn", false, translate("CreeperForewarn")).apply(GENERIC_KEY);
-        public static final ConfigOptionList Display_Container_Title_Mode = new ConfigOptionList("DisplayContainerTitleMode", DisplayContainerTitleMode.VANILLA).apply(GENERIC_KEY);
-        public static final ConfigOptionList Display_PlayInventory_Title_Mode = new ConfigOptionList("DisplayPlayInventoryTitleMode", DisplayPlayInventoryTitleMode.VANILLA).apply(GENERIC_KEY);
-        public static final ConfigOptionList Render_Shulkerbox_Color_Mode = new ConfigOptionList("RenderShulkerboxColorMode", RenderShulkerboxColorMode.NO).apply(GENERIC_KEY);
-        public static final ConfigOptionList Use_Cheat_Sheet = new ConfigOptionList("CheatSheetDisplayerMode", CheatSheetDisplayerMode.BREWING_STAND, translate("CheatSheetDisplayerMode")).apply(GENERIC_KEY);
+        public static final ConfigBoolean CREEPER_FOREWARN = new ConfigBoolean("CreeperForewarn", false, translate("CreeperForewarn")).apply(GENERIC_KEY);
+        public static final ConfigOptionList DISPLAY_CONTAINER_TITLE_MODE = new ConfigOptionList("DisplayContainerTitleMode", DisplayContainerTitleMode.VANILLA).apply(GENERIC_KEY);
+        public static final ConfigOptionList DISPLAY_PLAYER_INVENTORY_TITLE_MODE = new ConfigOptionList("DisplayPlayerInventoryTitleMode", DisplayPlayInventoryTitleMode.VANILLA).apply(GENERIC_KEY);
+        public static final ConfigOptionList RENDER_SHULKERBOX_COLOR_MODE = new ConfigOptionList("RenderShulkerboxColorMode", RenderShulkerboxColorMode.NO).apply(GENERIC_KEY);
+        public static final ConfigOptionList USE_CHEAT_SHEET = new ConfigOptionList("CheatSheetDisplayerMode", CheatSheetDisplayerMode.BREWING_STAND, translate("CheatSheetDisplayerMode")).apply(GENERIC_KEY);
 
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
-                Use_Cheat_Sheet,
-                Creeper_Forewarn,
+                USE_CHEAT_SHEET,
+                CREEPER_FOREWARN,
                 DISPLAY_FURNACE_PROGRESS,
                 DISPLAY_BREWING_STAND_PROGRESS,
                 DISPLAY_TRAPPED_CHEST_TITLE,
                 RENDER_LOCKED_HOPPER_MINECART,
-                Display_Container_Title_Mode,
-                Display_PlayInventory_Title_Mode,
-                Render_Shulkerbox_Color_Mode
+                DISPLAY_CONTAINER_TITLE_MODE,
+                DISPLAY_PLAYER_INVENTORY_TITLE_MODE,
+                RENDER_SHULKERBOX_COLOR_MODE
         );
     }
 
     public static class Fixes {
-        public static final ConfigOptionList Inventory_Preview_Fix_Mode = new ConfigOptionList("InventoryPreviewFixMode", InventoryPreviewFixMode.NO).apply(Fixes_KEY);
+        public static final ConfigOptionList INVENTORY_PREVIEW_FIX_MODE = new ConfigOptionList("InventoryPreviewFixMode", InventoryPreviewFixMode.NO).apply(Fixes_KEY);
         public static final ConfigBoolean BARREL_FIXES = new ConfigBoolean("BarrelFixes", false, translate("BarrelFixes")).apply(Fixes_KEY);
         public static final ConfigBoolean PREVENT_PREVIEWING_OWN_BACKPACK = new ConfigBoolean("PreventPreviewingOwnBackpack", false, translate("PreventPreviewingOwnBackpack")).apply(Fixes_KEY);
+        public static final ConfigBoolean HORSE_FIXES = new ConfigBoolean("HorseFixes", false, translate("HorseFixes")).apply(Fixes_KEY);
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
                 PREVENT_PREVIEWING_OWN_BACKPACK,
-                Inventory_Preview_Fix_Mode,
-                BARREL_FIXES
+                INVENTORY_PREVIEW_FIX_MODE,
+                BARREL_FIXES,
+                HORSE_FIXES
         );
     }
 }

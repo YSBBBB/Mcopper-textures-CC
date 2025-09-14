@@ -35,22 +35,19 @@ public class HitListener {
             this.entity = null;
             return ActionResult.PASS;
         });
-
     }
 
     public void getHitEntityResult() {
         UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
             this.player = player;
-            //会抛出空指针异常
-            //this.pos = hitResult.getEntity().getBlockPos()
             this.pos = entity.getBlockPos();
             this.hand = hand;
             this.world = world;
-            //清除blockEntity的缓存(不知道有没有必要，但保险一点)
+            //清空blockEntity的缓存
             this.blockEntity = null;
             this.entity = entity;
+            //System.out.println(Objects.requireNonNull(ModUtils.getDataSyncer(null).requestEntity(world, entity.getId())).getRight());
             return ActionResult.PASS;
         });
     }
-
 }

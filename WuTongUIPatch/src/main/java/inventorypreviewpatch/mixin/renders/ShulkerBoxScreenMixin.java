@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import static inventorypreviewpatch.configs.Configs.Generic.Render_Shulkerbox_Color_Mode;
+import static inventorypreviewpatch.configs.Configs.Generic.RENDER_SHULKERBOX_COLOR_MODE;
 import static inventorypreviewpatch.event.ResourcesLoadedListener.isLoadedWuTongUI;
 
 @Mixin(value = ShulkerBoxScreen.class, priority = 1)
@@ -26,7 +26,7 @@ public class ShulkerBoxScreenMixin {
 
     @Inject(method = "drawBackground", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILSOFT)
     private static void drawBackgroundWithColor(DrawContext context, float delta, int mouseX, int mouseY, CallbackInfo ci, int i, int j) {
-        if (!Render_Shulkerbox_Color_Mode.getStringValue().equals("no")) {
+        if (!RENDER_SHULKERBOX_COLOR_MODE.getStringValue().equals("no")) {
             if (HitListener.getInstance().blockEntity instanceof ShulkerBoxBlockEntity sbbe) {
                 DyeColor color = sbbe.getColor();
                 Identifier sprite = color == null ? TEXTURE_SHULKER_BOX : isLoadedWuTongUI ? TEXTURE_SHULKER_BOX_GRAY : TEXTURE_SHULKER_BOX;
@@ -39,7 +39,7 @@ public class ShulkerBoxScreenMixin {
                 //渲染上半部分
                 context.drawTexture(RenderLayer::getGuiTextured, sprite, i, j, 0.0F, 0.0F, 176, 77, 256, 256, colors);
                 //渲染下半部分
-                if (!Render_Shulkerbox_Color_Mode.getStringValue().equals("all")) return;
+                if (!RENDER_SHULKERBOX_COLOR_MODE.getStringValue().equals("all")) return;
                 colors = color == null && isLoadedWuTongUI ? 0xFFA587BB : colors;
                 context.drawTexture(RenderLayer::getGuiTextured, TEXTURE_SHULKER_BOX, i, j + 77, 0.0F, 77.0F, 176, 89, 256, 256, colors);
             }

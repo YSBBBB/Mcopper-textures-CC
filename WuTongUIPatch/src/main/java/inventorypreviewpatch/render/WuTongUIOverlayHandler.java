@@ -8,7 +8,10 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.*;
+import net.minecraft.client.gui.screen.ingame.BrewingStandScreen;
+import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.screen.ingame.HopperScreen;
 import net.minecraft.client.render.*;
 import net.minecraft.entity.vehicle.AbstractBoatEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
@@ -17,29 +20,28 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Nameable;
 
 import static inventorypreviewpatch.configs.Configs.Fixes.BARREL_FIXES;
-import static inventorypreviewpatch.configs.Configs.Generic.Display_Container_Title_Mode;
-import static inventorypreviewpatch.configs.Configs.Generic.Display_PlayInventory_Title_Mode;
+import static inventorypreviewpatch.configs.Configs.Generic.DISPLAY_CONTAINER_TITLE_MODE;
+import static inventorypreviewpatch.configs.Configs.Generic.DISPLAY_PLAYER_INVENTORY_TITLE_MODE;
 import static inventorypreviewpatch.event.ResourcesLoadedListener.*;
-import static inventorypreviewpatch.render.WuTongUIOverlay.*;
+import static inventorypreviewpatch.render.WuTongUIOverlay.PreviewOverlay.*;
+import static inventorypreviewpatch.render.WuTongUIOverlay.amendTitle;
 import static net.minecraft.screen.ScreenHandlerType.GENERIC_9X3;
 import static net.minecraft.screen.ScreenHandlerType.GENERIC_9X6;
 
 public class WuTongUIOverlayHandler {
     //一个渲染的框架
-    public static void renderFrame(InventoryOverlay.InventoryRenderType type, BlockEntity be, int x, int y, int slotsPerRow, int totalSlots, int form) {
+    public static void renderFrame(InventoryOverlay.InventoryRenderType type, InventoryOverlay.Context previewData, int x, int y, int slotsPerRow, int totalSlots, int form) {
         RenderUtils.setupBlend();
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buffer = tessellator.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
         BuiltBuffer builtBuffer;
 
         RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX);
-
         switch (form) {
-            case 1 -> renderInventoryBackground(type, x, y, slotsPerRow, totalSlots, buffer);
-            case 2 -> renderSpecialInventoryBackground(be, x, y, totalSlots, buffer);
-            case 3 -> renderBarrelBackground(x, y, totalSlots, buffer);
-            case 4 -> renderFurnaceProgress((AbstractFurnaceBlockEntity) be, x, y, buffer);
-            case 5 -> renderBrewingStandProgress((BrewingStandBlockEntity) be, x, y, buffer);
+            case 1 -> renderWuTongInventoryBackground(type, previewData, x, y, slotsPerRow, totalSlots, buffer);
+            case 2 -> renderWuTongBarrelBackground(x, y, totalSlots, buffer);
+            case 3 -> renderFurnaceProgress((AbstractFurnaceBlockEntity) previewData.be(), x, y, buffer);
+            case 4 -> renderBrewingStandProgress((BrewingStandBlockEntity) previewData.be(), x, y, buffer);
         }
 
         RenderSystem.enableBlend();
@@ -52,23 +54,20 @@ public class WuTongUIOverlayHandler {
         }
     }
 
-    public static <T> void drawTitle(DrawContext drawContext, Screen screen, T containerEntity) {
+    public static <T> void drawTitle(DrawContext drawContext, HandledScreen<?> screen, T  containerEntity) {
         int color = 4210752;
         TextRenderer textRenderer = screen.getTextRenderer();
-        int rows = screen instanceof GenericContainerScreen screen2 ? screen2.getScreenHandler().getRows() : 0;
+        int rows = screen instanceof GenericContainerScreen screen2 ? screen2.getScreenHandler().getRows() : screen instanceof HopperScreen? 1 : 3;
         int backgroundHeight = 114 + rows * 18;
         int titleX = (screen.getNavigationFocus().width() - 176) / 2 + 8;
         //物品栏标题
-        if (Display_PlayInventory_Title_Mode.getStringValue().equals("all")) {
+        if (DISPLAY_PLAYER_INVENTORY_TITLE_MODE.getStringValue().equals("all")) {
             int playerInventoryTitleY = (screen.getNavigationFocus().height() - (backgroundHeight)) / 2 + backgroundHeight - 94;
-            if (screen instanceof HorseScreen) {
-                playerInventoryTitleY += 27;
-            }
             Text playerInventoryTitle = Text.translatable("key.categories.inventory");
             drawContext.drawText(textRenderer, playerInventoryTitle, titleX, playerInventoryTitleY, color, false);
         }
         //容器
-        if (Display_Container_Title_Mode.getStringValue().equals("all")) {
+        if (DISPLAY_CONTAINER_TITLE_MODE.getStringValue().equals("all")) {
             Text title = null;
             //如果被改过名，就用改后的名字
             if (containerEntity instanceof Nameable nameableContainer) {
@@ -80,7 +79,7 @@ public class WuTongUIOverlayHandler {
             int titleY = (screen.getNavigationFocus().height() - (backgroundHeight)) / 2 + 6;
             if (!(screen instanceof GenericContainerScreen)) {
                 titleX = (screen.getNavigationFocus().width() - textRenderer.getWidth(title.asOrderedText())) / 2;
-                titleY = titleY - (screen instanceof HopperScreen ? 25 : 43);
+                titleY = titleY - 15;
                 color = 0xFF606060;
             }
             drawContext.drawText(textRenderer, title, titleX, titleY, color, false);
@@ -92,7 +91,7 @@ public class WuTongUIOverlayHandler {
         if (screen instanceof HandledScreen<?> handledScreen) {
             type = handledScreen.getScreenHandler().type;
             //强制显示物品栏标题功能开启后会在drawTitle()方法重新绘制新标题
-            if (Display_PlayInventory_Title_Mode.getStringValue().equals("all") || Display_PlayInventory_Title_Mode.getStringValue().equals("no")) {
+            if (DISPLAY_PLAYER_INVENTORY_TITLE_MODE.getStringValue().equals("all") || DISPLAY_PLAYER_INVENTORY_TITLE_MODE.getStringValue().equals("no")) {
                 handledScreen.playerInventoryTitle = Text.translatable("inventorypreviewpatch.blank.title");
             }
 
@@ -124,7 +123,7 @@ public class WuTongUIOverlayHandler {
                 }
             }
             //防止显示所有标题功能让容器有2个标题
-            if (Display_Container_Title_Mode.getStringValue().equals("no") || Display_Container_Title_Mode.getStringValue().equals("all")) {
+            if (DISPLAY_CONTAINER_TITLE_MODE.getStringValue().equals("no") || DISPLAY_CONTAINER_TITLE_MODE.getStringValue().equals("all")) {
                 //用 访问加宽器 修改title
                 screen.title = Text.translatable("inventorypreviewpatch.blank.title");
             }

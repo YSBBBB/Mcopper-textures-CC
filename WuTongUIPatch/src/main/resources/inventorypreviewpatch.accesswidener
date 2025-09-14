@@ -7,4 +7,6 @@ accessible field net/minecraft/screen/ScreenHandler type Lnet/minecraft/screen/S
 accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity propertyDelegate Lnet/minecraft/screen/PropertyDelegate;
 accessible field net/minecraft/block/entity/BrewingStandBlockEntity propertyDelegate Lnet/minecraft/screen/PropertyDelegate;
 accessible field net/minecraft/client/gui/screen/ingame/RecipeBookScreen recipeBook Lnet/minecraft/client/gui/screen/recipebook/RecipeBookWidget;
+accessible field net/minecraft/client/gui/screen/ingame/HandledScreen playerInventoryTitleY I
 accessible field net/minecraft/client/gui/screen/Screen children Ljava/util/List;
+accessible field net/minecraft/entity/passive/AbstractHorseEntity items Lnet/minecraft/inventory/SimpleInventory;

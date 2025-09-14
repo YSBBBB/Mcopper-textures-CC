@@ -63,9 +63,10 @@ public abstract class MethodExecuteHelper {
      * @param threshold
      */
     private static void counterIncrease(String id, int threshold) {
+        if (threshold <= 0) return;
         int shardIndex = getShardIndex(id);
         AtomicInteger counter = COUNTERS_SHARDS[shardIndex].getOrDefault(id, new AtomicInteger(0));
-        if (threshold > 0 && getCounter(id) >= threshold) {
+        if (getCounter(id) >= threshold) {
             counter.set(0);
         }
         counter.incrementAndGet();

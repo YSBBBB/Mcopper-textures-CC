@@ -10,7 +10,7 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-import static inventorypreviewpatch.configs.Configs.Generic.Use_Cheat_Sheet;
+import static inventorypreviewpatch.configs.Configs.Generic.USE_CHEAT_SHEET;
 import static inventorypreviewpatch.event.ResourcesLoadedListener.isLoadedWuTongUI;
 
 //为小抄单开一个类
@@ -51,16 +51,18 @@ public class CheatSheetOverlay {
 
     public static void addCheatSheetButton(Screen screen) {
         if (!isLoadedWuTongUI && screen instanceof BrewingStandScreen) return;
-        if (Use_Cheat_Sheet.getStringValue().equals("all") || Use_Cheat_Sheet.getStringValue().equals("no") || Use_Cheat_Sheet.getStringValue().equals("brewingStand")) {
-            boolean isUse = Use_Cheat_Sheet.getStringValue().equals("all");
+        if (USE_CHEAT_SHEET.getStringValue().equals("all") || USE_CHEAT_SHEET.getStringValue().equals("no") || USE_CHEAT_SHEET.getStringValue().equals("brewingStand")) {
+            boolean isUse = USE_CHEAT_SHEET.getStringValue().equals("all");
             isUseFurnaceCheatSheet = isUse;
             isUseAnvilCheatSheet = isUse;
-            isUseBrewingStandCheatSheet = Use_Cheat_Sheet.getStringValue().equals("brewingStand") || isUse;
+            isUseBrewingStandCheatSheet = USE_CHEAT_SHEET.getStringValue().equals("brewingStand") || isUse;
             isUseSmithingSCheatSheet = isUse;
             isUseHopperCheatSheet = isUse;
             return;
         }
-        if (isCheatSheetScreen(screen) && Use_Cheat_Sheet.getStringValue().equals("customization")) {
+        if (isCheatSheetScreen(screen) && USE_CHEAT_SHEET.getStringValue().equals("customization")) {
+            int x = GuiUtils.getScaledWindowWidth() / 2 + position[0];
+            int y = GuiUtils.getScaledWindowHeight() / 2 + position[1];
             ButtonWidget button = ButtonWidget.builder(Text.literal(""), button1 -> {
                 switch (screen) {
                     case AbstractFurnaceScreen<?> furnace -> {
@@ -73,10 +75,8 @@ public class CheatSheetOverlay {
                                         && buttonWidget.getX() == recipeBookButton_X
                                         && buttonWidget.getY() == recipeBookButton_Y
                                 ) {
-                                    if (buttonWidget != button1) {
-                                        buttonWidget.onPress();
-                                        break;
-                                    }
+                                    buttonWidget.onPress();
+                                    break;
                                 }
                             }
                         }
@@ -89,16 +89,20 @@ public class CheatSheetOverlay {
                     default -> {
                     }
                 }
-            }).dimensions(GuiUtils.getScaledWindowWidth() / 2 + position[0], GuiUtils.getScaledWindowHeight() / 2 + position[1], width, height).build();
+            }).dimensions(x, y, width, height).build();
 
-            screen.children.remove(button);
+            if (screen.children().equals(button)) {
+                if (button.getX() != x || button.getY() != y) {
+                    button.setPosition(x, y);
+                }
+            }
             screen.children.add(button);
         }
     }
 
     public static void renderButton(DrawContext context, Screen screen) {
         if (!isLoadedWuTongUI && screen instanceof BrewingStandScreen) return;
-        if (isCheatSheetScreen(screen) && Use_Cheat_Sheet.getStringValue().equals("customization")) {
+        if (isCheatSheetScreen(screen) && USE_CHEAT_SHEET.getStringValue().equals("customization")) {
             int x = GuiUtils.getScaledWindowWidth() / 2 + position[0];
             int y = GuiUtils.getScaledWindowHeight() / 2 + position[1];
             String buttonState = isTriggered(screen) ? "on" : "off";

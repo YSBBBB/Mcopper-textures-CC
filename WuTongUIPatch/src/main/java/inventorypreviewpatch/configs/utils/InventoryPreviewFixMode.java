@@ -3,10 +3,13 @@ package inventorypreviewpatch.configs.utils;
 import fi.dy.masa.malilib.config.IConfigOptionListEntry;
 import fi.dy.masa.malilib.util.StringUtils;
 
+import static inventorypreviewpatch.event.ResourcesLoadedListener.isLoadedWuTongUI;
+
 public enum InventoryPreviewFixMode implements IConfigOptionListEntry {
-    NO      ("no", "inventorypreviewpatch.label.InventoryPreviewFixMode.no"),
-    VANILLA ("vanilla", "inventorypreviewpatch.label.InventoryPreviewFixMode.vanilla"),
-    WUTONG  ("wutong", "inventorypreviewpatch.label.InventoryPreviewFixMode.wutong"),
+    NO             ("no", "inventorypreviewpatch.label.InventoryPreviewFixMode.no"),
+    VANILLA        ("vanilla", "inventorypreviewpatch.label.InventoryPreviewFixMode.vanilla"),
+    WUTONG         ("wutong", "inventorypreviewpatch.label.InventoryPreviewFixMode.wutong"),
+    CUSTOMIZATION  ("customization", "inventorypreviewpatch.label.InventoryPreviewFixMode.customize"),
     ;
 
     private final String configString;
@@ -40,12 +43,17 @@ public enum InventoryPreviewFixMode implements IConfigOptionListEntry {
     @Override
     public IConfigOptionListEntry cycle(boolean forward) {
         int id = this.ordinal();
-
         if (forward) {
+            if (id == 1 && !isLoadedWuTongUI) {
+                id++;
+            }
             if (++id >= values().length) {
                 id = 0;
             }
         } else {
+            if (id == 1 && !isLoadedWuTongUI) {
+                id--;
+            }
             if (--id < 0) {
                 id = values().length - 1;
             }
