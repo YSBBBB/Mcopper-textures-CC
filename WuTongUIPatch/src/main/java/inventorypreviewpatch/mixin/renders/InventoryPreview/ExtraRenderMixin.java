@@ -101,7 +101,7 @@ public abstract class ExtraRenderMixin implements IMixinAbstractHorseEntity {
         World world = WorldUtils.getBestWorld(mc);
         boolean useWuTong = INVENTORY_PREVIEW_FIX_MODE.getStringValue().equals("wutong") && ResourcesLoadedListener.isLoadedWuTongUI;
         if (previewData == null || world == null) return;
-
+        System.out.println(previewData.nbt());
         final int xCenter = GuiUtils.getScaledWindowWidth() / 2;
         final int yCenter = GuiUtils.getScaledWindowHeight() / 2;
         int x = xCenter - 52 / 2;
