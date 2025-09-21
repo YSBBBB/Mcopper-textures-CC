@@ -4,6 +4,7 @@ import fi.dy.masa.malilib.util.GuiUtils;
 import inventorypreviewpatch.ModUtils;
 import inventorypreviewpatch.event.HitListener;
 import inventorypreviewpatch.interfaces.IRenderers;
+import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -18,12 +19,12 @@ public class RenderHandler implements IRenderers {
     @Override
     public void onRenderBeforeScreenOverlay(MinecraftClient client, Screen screen, int scaledWidth, int scaledHeight) {
         Screen currentscreen = client.currentScreen;
-        if (ModUtils.isGenericScreen(currentscreen)) {
-            BlockEntity blockEntity = HitListener.getInstance().blockEntity;
-            Entity entity = HitListener.getInstance().entity;
-            var containerEntity = blockEntity != null ? blockEntity : entity;
-            //修改容器标题
+        if (ModUtils.isContainerScreen(currentscreen)) {
+            BlockEntity be = HitListener.getHitResult().be();
+            Entity entity = HitListener.getHitResult().entity();
+            var containerEntity = ModUtils.getFirstNonNull(be, entity);
             WuTongUIOverlayHandler.setTitle(currentscreen, containerEntity);
+            CheatSheetOverlay.addCheatSheetButton(screen);
         }
     }
 
@@ -32,16 +33,15 @@ public class RenderHandler implements IRenderers {
         Screen currentscreen = client.currentScreen;
         int x = scaledWidth / 2;
         int y = scaledHeight / 2;
-        if (ModUtils.isGenericScreen(currentscreen)) {
-            BlockEntity blockEntity = HitListener.getInstance().blockEntity;
-            Entity entity = HitListener.getInstance().entity;
-            var containerEntity = blockEntity != null ? blockEntity : entity;
-            assert currentscreen instanceof HandledScreen<?>;
+        if (ModUtils.isContainerScreen(currentscreen)) {
+            Block block = HitListener.getHitResult().block();
+            BlockEntity be = HitListener.getHitResult().be();
+            Entity entity = HitListener.getHitResult().entity();
+            var containerEntity = ModUtils.getFirstNonNull(be, entity, block);
             WuTongUIOverlayHandler.drawTitle(drawContext, (HandledScreen<?>) currentscreen, containerEntity);
-            //绘制小抄
+            CreeperForewarnOverlay.renderCreeperForewarn(currentscreen, drawContext, x, y, client);
             CheatSheetOverlay.renderCheatSheet(drawContext, currentscreen, x, y);
-        }
-        if (currentscreen instanceof InventoryScreen || ModUtils.isGenericScreen(currentscreen)) {
+        } else if (currentscreen instanceof InventoryScreen) {
             CreeperForewarnOverlay.renderCreeperForewarn(currentscreen, drawContext, x, y, client);
         }
     }

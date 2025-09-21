@@ -26,23 +26,21 @@ public class ShulkerBoxScreenMixin {
 
     @Inject(method = "drawBackground", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILSOFT)
     private static void drawBackgroundWithColor(DrawContext context, float delta, int mouseX, int mouseY, CallbackInfo ci, int i, int j) {
-        if (!RENDER_SHULKERBOX_COLOR_MODE.getStringValue().equals("no")) {
-            if (HitListener.getInstance().blockEntity instanceof ShulkerBoxBlockEntity sbbe) {
-                DyeColor color = sbbe.getColor();
-                Identifier sprite = color == null ? TEXTURE_SHULKER_BOX : isLoadedWuTongUI ? TEXTURE_SHULKER_BOX_GRAY : TEXTURE_SHULKER_BOX;
-                int colors = switch (color) {
-                    case null -> isLoadedWuTongUI ? 0xFFFFFFFF : 0xFFA587BB;
-                    //太黑会糊成一坨
-                    case BLACK -> 0xFF262626;
-                    default -> color.getEntityColor();
-                };
-                //渲染上半部分
-                context.drawTexture(RenderLayer::getGuiTextured, sprite, i, j, 0.0F, 0.0F, 176, 77, 256, 256, colors);
-                //渲染下半部分
-                if (!RENDER_SHULKERBOX_COLOR_MODE.getStringValue().equals("all")) return;
-                colors = color == null && isLoadedWuTongUI ? 0xFFA587BB : colors;
-                context.drawTexture(RenderLayer::getGuiTextured, TEXTURE_SHULKER_BOX, i, j + 77, 0.0F, 77.0F, 176, 89, 256, 256, colors);
-            }
-        }
+        if (RENDER_SHULKERBOX_COLOR_MODE.getStringValue().equals("no")) return;
+        if (!(HitListener.getHitResult().be() instanceof ShulkerBoxBlockEntity sbbe)) return;
+        DyeColor color = sbbe.getColor();
+        Identifier sprite = color == null ? TEXTURE_SHULKER_BOX : isLoadedWuTongUI() ? TEXTURE_SHULKER_BOX_GRAY : TEXTURE_SHULKER_BOX;
+        int colors = switch (color) {
+            case null -> isLoadedWuTongUI() ? 0xFFFFFFFF : 0xFFA587BB;
+            //太黑会糊成一坨
+            case BLACK -> 0xFF262626;
+            default -> color.getEntityColor();
+        };
+        //渲染上半部分
+        context.drawTexture(RenderLayer::getGuiTextured, sprite, i, j, 0.0F, 0.0F, 176, 77, 256, 256, colors);
+        //渲染下半部分
+        if (!RENDER_SHULKERBOX_COLOR_MODE.getStringValue().equals("all")) return;
+        colors = color == null && isLoadedWuTongUI() ? 0xFFA587BB : colors;
+        context.drawTexture(RenderLayer::getGuiTextured, TEXTURE_SHULKER_BOX, i, j + 77, 0.0F, 77.0F, 176, 89, 256, 256, colors);
     }
 }

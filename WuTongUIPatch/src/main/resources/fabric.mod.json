@@ -18,7 +18,10 @@
       "inventorypreviewpatch.compat.modmenu.ModMenuImpl"
     ],
     "rei_client": [
-      "inventorypreviewpatch.compat.rei.REIHelper"
+      "inventorypreviewpatch.compat.rei.ReiRecipePageImpl"
+    ],
+    "jade": [
+      "inventorypreviewpatch.compat.jade.JadeImpl"
     ]
   },
   "mixins": [

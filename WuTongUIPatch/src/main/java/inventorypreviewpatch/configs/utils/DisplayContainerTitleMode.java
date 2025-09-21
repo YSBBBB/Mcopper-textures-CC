@@ -23,7 +23,6 @@ public enum DisplayContainerTitleMode implements IConfigOptionListEntry {
                 return mode;
             }
         }
-
         return DisplayContainerTitleMode.VANILLA;
     }
 
@@ -58,5 +57,4 @@ public enum DisplayContainerTitleMode implements IConfigOptionListEntry {
     public DisplayContainerTitleMode fromString(String name) {
         return fromStringStatic(name);
     }
-
 }

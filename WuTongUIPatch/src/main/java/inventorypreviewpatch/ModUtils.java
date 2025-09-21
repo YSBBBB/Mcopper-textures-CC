@@ -1,7 +1,7 @@
 package inventorypreviewpatch;
 
-import fi.dy.masa.malilib.interfaces.IDataSyncer;
-import fi.dy.masa.minihud.data.EntitiesDataManager;
+import inventorypreviewpatch.helper.MethodExecuteHelper;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -10,20 +10,24 @@ import net.minecraft.client.render.BufferBuilder;
 
 public class ModUtils {
 
-    public static boolean isGenericScreen(Screen screen) {
-        boolean isGenericScreen = false;
-        if (screen instanceof HandledScreen<?>) {
-            isGenericScreen = !(screen instanceof CreativeInventoryScreen) && !(screen instanceof InventoryScreen);
+    public static Object getFirstNonNull(Object... params) {
+        for (Object param : params) {
+            if (param != null) return param;
         }
-        return isGenericScreen;
+        return null;
     }
 
-    //同步器，借鉴于malilib
-    public static IDataSyncer getDataSyncer(IDataSyncer syncer) {
-        if (syncer == null) {
-            syncer = EntitiesDataManager.getInstance();
+    public static boolean isOnPreview(MinecraftClient mc) {
+        int timeoutMS = mc.getCurrentFps() <= 20 ? 250 : 75;
+        return MethodExecuteHelper.getExecutionState("inventory_preview", timeoutMS);
+    }
+
+    public static boolean isContainerScreen(Screen screen) {
+        boolean isContainerScreen = false;
+        if (screen instanceof HandledScreen<?>) {
+            isContainerScreen = !(screen instanceof CreativeInventoryScreen) && !(screen instanceof InventoryScreen);
         }
-        return syncer;
+        return isContainerScreen;
     }
 
     //渲染
@@ -34,11 +38,9 @@ public class ModUtils {
     public static void drawTexturedRectBatched(int x, int y, int u, int v, int width, int height, float zLevel, float pixelWidth, BufferBuilder buffer) {
         //pixelWidth即像素宽度应为1.0与材质文件边长的比值
         if (pixelWidth == 0) pixelWidth = 0.00390625F;
-
         buffer.vertex(x, y + height, zLevel).texture(u * pixelWidth, (v + height) * pixelWidth);
         buffer.vertex(x + width, y + height, zLevel).texture((u + width) * pixelWidth, (v + height) * pixelWidth);
         buffer.vertex(x + width, y, zLevel).texture((u + width) * pixelWidth, v * pixelWidth);
         buffer.vertex(x, y, zLevel).texture(u * pixelWidth, v * pixelWidth);
     }
-
 }

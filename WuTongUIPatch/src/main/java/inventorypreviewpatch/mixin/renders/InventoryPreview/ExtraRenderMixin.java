@@ -14,7 +14,6 @@ import fi.dy.masa.malilib.util.game.BlockUtils;
 import fi.dy.masa.malilib.util.nbt.NbtBlockUtils;
 import fi.dy.masa.malilib.util.nbt.NbtEntityUtils;
 import fi.dy.masa.malilib.util.nbt.NbtKeys;
-import inventorypreviewpatch.event.ResourcesLoadedListener;
 import inventorypreviewpatch.helper.MethodExecuteHelper;
 import inventorypreviewpatch.render.WuTongUIOverlay;
 import net.minecraft.block.ShulkerBoxBlock;
@@ -55,11 +54,10 @@ import static inventorypreviewpatch.configs.Configs.Fixes.*;
 import static inventorypreviewpatch.configs.Configs.Generic.DISPLAY_BREWING_STAND_PROGRESS;
 import static inventorypreviewpatch.configs.Configs.Generic.DISPLAY_FURNACE_PROGRESS;
 import static inventorypreviewpatch.render.WuTongUIOverlay.PreviewOverlay;
-import static inventorypreviewpatch.render.WuTongUIOverlay.PreviewOverlay.loadCustomMaterialParameters;
 import static inventorypreviewpatch.render.WuTongUIOverlayHandler.renderFrame;
 
 @Mixin(InventoryOverlayScreen.class)
-public abstract class ExtraRenderMixin implements IMixinAbstractHorseEntity {
+public class ExtraRenderMixin {
 
     @Unique
     private static final Identifier MINECART = Identifier.ofVanilla("textures/font/b118.png");
@@ -69,8 +67,6 @@ public abstract class ExtraRenderMixin implements IMixinAbstractHorseEntity {
     private static final ItemStack CHEST = Items.CHEST.getDefaultStack();
     @Unique
     private static final ItemStack SADDLE = Items.SADDLE.getDefaultStack();
-    @Unique
-    private static final SimpleInventory itemStackRegister = new SimpleInventory(CHEST, SADDLE);
     @Unique
     private static final ItemStack AIR = Items.AIR.getDefaultStack();
     @Unique
@@ -87,21 +83,19 @@ public abstract class ExtraRenderMixin implements IMixinAbstractHorseEntity {
     private int ticks;
 
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
-    public void RrenderAtHead(DrawContext drawContext, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    public void RenderAtHead(DrawContext drawContext, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         MethodExecuteHelper.startExecute("inventory_preview", -1);  //判断该方法是否正在执行
         ci.cancel();
         if (PREVENT_PREVIEWING_OWN_BACKPACK.getBooleanValue()
                 && (previewData.entity() != null && mc.player != null)
                 && previewData.entity().getUuid().equals(mc.player.getUuid())
-        ) {
-            return;
-        }
+        ) return;
+
         this.ticks++;
         MinecraftClient mc = MinecraftClient.getInstance();
         World world = WorldUtils.getBestWorld(mc);
-        boolean useWuTong = INVENTORY_PREVIEW_FIX_MODE.getStringValue().equals("wutong") && ResourcesLoadedListener.isLoadedWuTongUI;
+        boolean useWuTong = INVENTORY_PREVIEW_FIX_MODE.getStringValue().equals("wutong");
         if (previewData == null || world == null) return;
-        System.out.println(previewData.nbt());
         final int xCenter = GuiUtils.getScaledWindowWidth() / 2;
         final int yCenter = GuiUtils.getScaledWindowHeight() / 2;
         int x = xCenter - 52 / 2;
@@ -109,7 +103,6 @@ public abstract class ExtraRenderMixin implements IMixinAbstractHorseEntity {
         int startSlot = 0;
         int totalSlots = previewData.inv() == null ? 0 : previewData.inv().size();
         NbtCompound nbt = previewData.nbt() == null ? new NbtCompound() : previewData.nbt();
-        loadCustomMaterialParameters(mc);
         List<ItemStack> armourItems = new ArrayList<>();
         if (previewData.entity() instanceof AbstractHorseEntity horse) {
             if (HORSE_FIXES.getBooleanValue()) {
@@ -129,7 +122,6 @@ public abstract class ExtraRenderMixin implements IMixinAbstractHorseEntity {
                 armourItems.add(previewData.entity().getEquippedStack(EquipmentSlot.BODY));
                 armourItems.add(previewData.inv().getStack(0));
             }
-
             startSlot = 1;
             totalSlots = previewData.inv().size() - 1;
 
@@ -273,7 +265,6 @@ public abstract class ExtraRenderMixin implements IMixinAbstractHorseEntity {
             default -> {
             }
         }
-
         // Refresh
         if (ticks % 4 == 0) {
             previewData = previewData.handler().onContextRefresh(previewData, world);

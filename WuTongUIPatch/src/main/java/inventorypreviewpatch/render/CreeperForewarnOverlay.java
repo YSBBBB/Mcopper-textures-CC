@@ -2,7 +2,6 @@ package inventorypreviewpatch.render;
 
 import fi.dy.masa.malilib.util.WorldUtils;
 import inventorypreviewpatch.ModUtils;
-import inventorypreviewpatch.helper.MethodExecuteHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -28,7 +27,6 @@ import static inventorypreviewpatch.configs.Configs.Generic.CREEPER_FOREWARN;
 
 @Environment(EnvType.CLIENT)
 public class CreeperForewarnOverlay {
-    //用读写线程分离的思路，仅单线程写入，不会引发并发修改异常
     private static final Identifier TEXTURE_CREEPER = Identifier.ofVanilla("textures/entity/creeper/creeper.png");
     private static final Identifier TEXTURE_CREEPER_CHARGED = Identifier.ofVanilla("textures/entity/creeper/creeper_armor.png");
     private static final Identifier TEXTURE_CREEPER_EXPLODE = Identifier.of("inventorypreviewpatch", "textures/entity/creeper/creeper_explode.png");
@@ -53,36 +51,32 @@ public class CreeperForewarnOverlay {
         if (Forewarn ? ticks % 4 == 0 : ticks % 8 == 0) {
             Box largeBox = new Box(player.getBlockPos()).expand(16);
             List<CreeperEntity> allCreeper = List.copyOf(world.getEntitiesByType(CREEPER_TYPE, largeBox, EntityPredicates.VALID_ENTITY));
-
             Forewarn = !allCreeper.isEmpty();
-            if (Forewarn) {
-                //更新苦力怕状态
-                //直接赋值容易受到其他苦力怕影响,计数器赋值更加灵活
-                int counter_Emergency = 0;
-                int counter_ToExplode = 0;
-                int counter_IsCharged = 0;
-                for (CreeperEntity creeper : allCreeper) {
-                    //系数大可以让预警更及时(如果存在直接退出)
-                    if (creeper.distanceTo(player) <= 8) {
-                        counter_Emergency++;
-                    }
-                    if (creeper.getClientFuseTime(partialTicks) * 30 > 6) {
-                        counter_ToExplode++;
-                    }
-                    if (creeper.isCharged()) {
-                        counter_IsCharged++;
-                    }
+            if (!Forewarn) return;
+            //更新苦力怕状态
+            //直接赋值容易受到其他苦力怕影响,计数器赋值更加灵活
+            int counter_Emergency = 0;
+            int counter_ToExplode = 0;
+            int counter_IsCharged = 0;
+            for (CreeperEntity creeper : allCreeper) {
+                //系数大可以让预警更及时
+                if (creeper.distanceTo(player) <= 8) {
+                    counter_Emergency++;
                 }
-                AboutToExplode = counter_ToExplode > 0;
-                Emergency = counter_Emergency > 0 || allCreeper.size() > 3;
-                IsCharged = counter_IsCharged > 0;
+                if (creeper.getClientFuseTime(partialTicks) * 30 > 6) {
+                    counter_ToExplode++;
+                }
+                if (creeper.isCharged()) {
+                    counter_IsCharged++;
+                }
             }
+            AboutToExplode = counter_ToExplode > 0;
+            Emergency = counter_Emergency > 0 || allCreeper.size() > 3;
+            IsCharged = counter_IsCharged > 0;
         }
         //更新渲染状态
         if (AboutToExplode) {
-            if (ticks % 3 == 0) {
-                IsFlash = !IsFlash;
-            }
+            if (ticks % 3 == 0) IsFlash = !IsFlash;
         } else {
             IsFlash = false;
         }
@@ -92,20 +86,17 @@ public class CreeperForewarnOverlay {
             charged_v = generator.nextInt(64);
         }
     }
-
     private static void renderCreeperForewarn(DrawContext context, int x, int y, MinecraftClient mc) {
         PlayerEntity player = mc.player;
         World world = WorldUtils.getBestWorld(mc);
-        if (player == null || world == null) return;
-        if (Forewarn) {
-            if (Emergency) {
-                context.drawTexture(RenderLayer::getGuiTextured, IsFlash ? TEXTURE_CREEPER_EXPLODE : TEXTURE_CREEPER, x - 8, y - 80, 16, 16, 16, 16, 128, 64, IsFlash ? 0xFFFFFFFF : 0xFFFF0000);
-            } else {
-                context.drawTexture(RenderLayer::getGuiTextured, IsFlash ? TEXTURE_CREEPER_EXPLODE : TEXTURE_CREEPER, x - 8, y - 80, 16, 16, 16, 16, 128, 64);
-            }
-            if (IsCharged) {
-                context.drawTexture(RenderLayer::getGuiTextured, TEXTURE_CREEPER_CHARGED, x - 11, y - 83, charged_u, charged_v, 22, 22, 128, 64);
-            }
+        if (player == null || world == null || !Forewarn) return;
+        if (Emergency) {
+            context.drawTexture(RenderLayer::getGuiTextured, IsFlash ? TEXTURE_CREEPER_EXPLODE : TEXTURE_CREEPER, x - 8, y - 80, 16, 16, 16, 16, 128, 64, IsFlash ? 0xFFFFFFFF : 0xFFFF0000);
+        } else {
+            context.drawTexture(RenderLayer::getGuiTextured, IsFlash ? TEXTURE_CREEPER_EXPLODE : TEXTURE_CREEPER, x - 8, y - 80, 16, 16, 16, 16, 128, 64);
+        }
+        if (IsCharged) {
+            context.drawTexture(RenderLayer::getGuiTextured, TEXTURE_CREEPER_CHARGED, x - 11, y - 83, charged_u, charged_v, 22, 22, 128, 64);
         }
     }
 
@@ -113,12 +104,11 @@ public class CreeperForewarnOverlay {
         if (!CREEPER_FOREWARN.getBooleanValue()) return;
         if (screen == null || screen instanceof GameMenuScreen) {
             //根据不同的帧数区间来设置超时时间，防止渣机错认为依然处在预览状态
-            int timeoutMS = mc.getCurrentFps() <= 20 ? 150 : 50;
-            if (MethodExecuteHelper.getExecutionState("inventory_preview", timeoutMS)) {
+            if (ModUtils.isOnPreview(mc)) {
                 y += 100;
             }
             renderCreeperForewarn(context, x, y, mc);
-        } else if (ModUtils.isGenericScreen(screen) || screen instanceof InventoryScreen) {
+        } else if (ModUtils.isContainerScreen(screen) || screen instanceof InventoryScreen) {
             if (screen instanceof GenericContainerScreen screen2) {
                 int rows = screen2.getScreenHandler().getRows();
                 int backgroundHeight = 114 + rows * 18;

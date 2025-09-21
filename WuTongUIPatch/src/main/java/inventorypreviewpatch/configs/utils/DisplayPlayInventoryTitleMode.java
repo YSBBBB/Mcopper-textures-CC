@@ -23,7 +23,6 @@ public enum DisplayPlayInventoryTitleMode implements IConfigOptionListEntry {
                 return mode;
             }
         }
-
         return DisplayPlayInventoryTitleMode.VANILLA;
     }
 
@@ -40,7 +39,6 @@ public enum DisplayPlayInventoryTitleMode implements IConfigOptionListEntry {
     @Override
     public IConfigOptionListEntry cycle(boolean forward) {
         int id = this.ordinal();
-
         if (forward) {
             if (++id >= values().length) {
                 id = 0;
@@ -50,7 +48,6 @@ public enum DisplayPlayInventoryTitleMode implements IConfigOptionListEntry {
                 id = values().length - 1;
             }
         }
-
         return values()[id % values().length];
     }
 
@@ -58,5 +55,4 @@ public enum DisplayPlayInventoryTitleMode implements IConfigOptionListEntry {
     public DisplayPlayInventoryTitleMode fromString(String name) {
         return fromStringStatic(name);
     }
-
 }

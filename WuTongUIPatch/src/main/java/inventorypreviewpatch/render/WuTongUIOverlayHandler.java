@@ -3,6 +3,7 @@ package inventorypreviewpatch.render;
 import com.mojang.blaze3d.systems.RenderSystem;
 import fi.dy.masa.malilib.render.InventoryOverlay;
 import fi.dy.masa.malilib.render.RenderUtils;
+import inventorypreviewpatch.mixin.Accessors;
 import net.minecraft.block.entity.*;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gl.ShaderProgramKeys;
@@ -20,8 +21,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Nameable;
 
 import static inventorypreviewpatch.configs.Configs.Fixes.BARREL_FIXES;
-import static inventorypreviewpatch.configs.Configs.Generic.DISPLAY_CONTAINER_TITLE_MODE;
-import static inventorypreviewpatch.configs.Configs.Generic.DISPLAY_PLAYER_INVENTORY_TITLE_MODE;
+import static inventorypreviewpatch.configs.Configs.Generic.*;
 import static inventorypreviewpatch.event.ResourcesLoadedListener.*;
 import static inventorypreviewpatch.render.WuTongUIOverlay.PreviewOverlay.*;
 import static inventorypreviewpatch.render.WuTongUIOverlay.amendTitle;
@@ -42,8 +42,8 @@ public class WuTongUIOverlayHandler {
             case 2 -> renderWuTongBarrelBackground(x, y, totalSlots, buffer);
             case 3 -> renderFurnaceProgress((AbstractFurnaceBlockEntity) previewData.be(), x, y, buffer);
             case 4 -> renderBrewingStandProgress((BrewingStandBlockEntity) previewData.be(), x, y, buffer);
+            case 5 -> renderVanillaInventoryBackground(type, x, y, slotsPerRow, totalSlots, buffer);
         }
-
         RenderSystem.enableBlend();
 
         try {
@@ -54,10 +54,10 @@ public class WuTongUIOverlayHandler {
         }
     }
 
-    public static <T> void drawTitle(DrawContext drawContext, HandledScreen<?> screen, T  containerEntity) {
+    public static void drawTitle(DrawContext drawContext, HandledScreen<?> screen, Object containerEntity) {
         int color = 4210752;
         TextRenderer textRenderer = screen.getTextRenderer();
-        int rows = screen instanceof GenericContainerScreen screen2 ? screen2.getScreenHandler().getRows() : screen instanceof HopperScreen? 1 : 3;
+        int rows = screen instanceof GenericContainerScreen screen2 ? screen2.getScreenHandler().getRows() : screen instanceof HopperScreen ? 1 : 3;
         int backgroundHeight = 114 + rows * 18;
         int titleX = (screen.getNavigationFocus().width() - 176) / 2 + 8;
         //物品栏标题
@@ -81,52 +81,51 @@ public class WuTongUIOverlayHandler {
                 titleX = (screen.getNavigationFocus().width() - textRenderer.getWidth(title.asOrderedText())) / 2;
                 titleY = titleY - 15;
                 color = 0xFF606060;
+            } else if (containerEntity instanceof TrappedChestBlockEntity && DISPLAY_TRAPPED_CHEST_TITLE.getBooleanValue()) {
+                color = 0xFF9C0000;
             }
             drawContext.drawText(textRenderer, title, titleX, titleY, color, false);
         }
     }
 
-    public static <T> void setTitle(Screen screen, T containerEntity) {
+    public static void setTitle(Screen screen, Object containerEntity) {
         ScreenHandlerType<?> type;
-        if (screen instanceof HandledScreen<?> handledScreen) {
-            type = handledScreen.getScreenHandler().type;
-            //强制显示物品栏标题功能开启后会在drawTitle()方法重新绘制新标题
-            if (DISPLAY_PLAYER_INVENTORY_TITLE_MODE.getStringValue().equals("all") || DISPLAY_PLAYER_INVENTORY_TITLE_MODE.getStringValue().equals("no")) {
-                handledScreen.playerInventoryTitle = Text.translatable("inventorypreviewpatch.blank.title");
-            }
+        if (!(screen instanceof HandledScreen<?> handledScreen)) return;
+        type = ((Accessors.ScreenHandlerAccessor)(handledScreen.getScreenHandler())).inventory_preview_fix_getType();
+        //强制显示物品栏标题功能开启后会在drawTitle()方法重新绘制新标题
+        if (DISPLAY_PLAYER_INVENTORY_TITLE_MODE.getStringValue().equals("all") || DISPLAY_PLAYER_INVENTORY_TITLE_MODE.getStringValue().equals("no")) {
+            ((Accessors.HandledScreenAccessor) handledScreen).inventory_preview_fix_setPlayerInventoryTitle(Text.empty());
+        }
+        //防止显示所有标题功能让容器有2个标题
+        if (DISPLAY_CONTAINER_TITLE_MODE.getStringValue().equals("no") || DISPLAY_CONTAINER_TITLE_MODE.getStringValue().equals("all")) {
+            //用 访问加宽器 修改title
+            ((Accessors.ScreenAccessor) screen).inventory_preview_fix_setTitle(Text.empty());
+        }
 
-            if (isLoadedWuTongUI) {
-                if (screen instanceof BrewingStandScreen && (isChinese || isEN_US)) {
-                    //酿造台的小抄之后会将单独渲染（原版有点小bug）
-                    screen.title = Text.translatable("inventorypreviewpatch.blank.title");
-                    return;
-                } else if (containerEntity instanceof BarrelBlockEntity) {
-                    //让不同语言都能使用(大)木桶和末影箱的GUI
-                    if (type == GENERIC_9X6 && BARREL_FIXES.getBooleanValue()) {
-                        screen.title = Text.translatable("inventorypreviewpatch.large.barrel.title");
-                    } else if (type == GENERIC_9X3) {
-                        screen.title = Text.translatable("inventorypreviewpatch.barrel.title");
-                    }
-                    return;
-                } else if (containerEntity instanceof EnderChestBlockEntity) {
-                    screen.title = Text.translatable("inventorypreviewpatch.enderchest.title");
-                    return;
-                } else if (containerEntity instanceof AbstractMinecartEntity) {
-                    screen.title = Text.translatable("inventorypreviewpatch.minecart.title");
-                    return;
-                } else if (containerEntity instanceof AbstractBoatEntity) {
-                    screen.title = Text.translatable("inventorypreviewpatch.boat.title");
-                    return;
-                } else if (containerEntity instanceof TrappedChestBlockEntity) {
-                    screen.title = amendTitle(screen, containerEntity);
-                    return;
-                }
+        if (containerEntity instanceof TrappedChestBlockEntity && DISPLAY_TRAPPED_CHEST_TITLE.getBooleanValue()) {
+            ((Accessors.ScreenAccessor) screen).inventory_preview_fix_setTitle(screen.getTitle().copy().withColor(0xFFFF0000));
+
+            return;
+        }
+
+        if (!isLoadedWuTongUI()) return;
+        if (screen instanceof BrewingStandScreen && (isChinese() || isEN_US())) {
+            //酿造台的小抄之后会将单独渲染（原版有点小bug）
+            ((Accessors.ScreenAccessor) screen).inventory_preview_fix_setTitle(Text.empty());
+        } else if (containerEntity instanceof BarrelBlockEntity) {
+            //让不同语言都能使用(大)木桶和末影箱的GUI
+            if (!BARREL_FIXES.getBooleanValue()) return;
+            if (type == GENERIC_9X6) {
+                ((Accessors.ScreenAccessor) screen).inventory_preview_fix_setTitle(Text.translatable("inventorypreviewpatch.large.barrel.title"));
+            } else if (type == GENERIC_9X3) {
+                ((Accessors.ScreenAccessor) screen).inventory_preview_fix_setTitle(Text.translatable("inventorypreviewpatch.barrel.title"));
             }
-            //防止显示所有标题功能让容器有2个标题
-            if (DISPLAY_CONTAINER_TITLE_MODE.getStringValue().equals("no") || DISPLAY_CONTAINER_TITLE_MODE.getStringValue().equals("all")) {
-                //用 访问加宽器 修改title
-                screen.title = Text.translatable("inventorypreviewpatch.blank.title");
-            }
+        } else if (containerEntity instanceof EnderChestBlockEntity) {
+            ((Accessors.ScreenAccessor) screen).inventory_preview_fix_setTitle(Text.translatable("inventorypreviewpatch.enderchest.title"));
+        } else if (containerEntity instanceof AbstractMinecartEntity) {
+            ((Accessors.ScreenAccessor) screen).inventory_preview_fix_setTitle(Text.translatable("inventorypreviewpatch.minecart.title"));
+        } else if (containerEntity instanceof AbstractBoatEntity) {
+            ((Accessors.ScreenAccessor) screen).inventory_preview_fix_setTitle(Text.translatable("inventorypreviewpatch.boat.title"));
         }
     }
 }

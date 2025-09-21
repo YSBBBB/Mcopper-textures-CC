@@ -20,8 +20,7 @@ public class InitHandler {
     public void registerModHandlers() {
         Configs.ConfigsRegister();
 
-        HitListener.getInstance().getHitBlockResult();
-        HitListener.getInstance().getHitEntityResult();
+        HitListener.getInstance().upDateHitResult();
         ModRenderEventHandler.registerRenderers();
         ResourcesLoadedListener.getInstance().UpdateState();
 
@@ -32,6 +31,5 @@ public class InitHandler {
 
         ITickExecutor executor = new TickExecutor();
         ModRenderEventHandler.getInstance().registerTickExecutor(executor);
-
     }
 }

@@ -1,7 +1,7 @@
 package inventorypreviewpatch.render.minecart;
 
+import fi.dy.masa.malilib.interfaces.IDataSyncer;
 import fi.dy.masa.malilib.util.WorldUtils;
-import inventorypreviewpatch.ModUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
@@ -26,6 +26,8 @@ public class HopperMinecartRenderer extends AbstractMinecartEntityRenderer<Hoppe
     public HopperMinecartRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, EntityModelLayers.HOPPER_MINECART);
     }
+    private static final IDataSyncer dataSyncer = new IDataSyncer() {};
+    private NbtCompound nbt = new NbtCompound();
 
     @Override
     public HopperMinecartEntityRenderState createRenderState() {
@@ -42,18 +44,19 @@ public class HopperMinecartRenderer extends AbstractMinecartEntityRenderer<Hoppe
     @Override
     public void updateRenderState(HopperMinecartEntity hopperMinecartEntity, HopperMinecartEntityRenderState hopperMinecartEntityRenderState, float f) {
         super.updateRenderState(hopperMinecartEntity, hopperMinecartEntityRenderState, f);
-        //寻常方法不管用，使用malilib库
         if (RENDER_LOCKED_HOPPER_MINECART.getBooleanValue()) {
-            World world = WorldUtils.getBestWorld(MinecraftClient.getInstance());
-            NbtCompound nbt = new NbtCompound();
-            Pair<Entity, NbtCompound> pair = ModUtils.getDataSyncer(null).requestEntity(world, hopperMinecartEntity.getId());
-
-            if (pair != null) {
-                nbt = pair.getRight();
-            }
+            updateNBT(hopperMinecartEntity);
             hopperMinecartEntityRenderState.enabled = !nbt.contains("Enabled") || nbt.getBoolean("Enabled");
         } else {
             hopperMinecartEntityRenderState.enabled = true;
+        }
+    }
+
+    private void updateNBT(HopperMinecartEntity hopperMinecartEntity) {
+        World world = WorldUtils.getBestWorld(MinecraftClient.getInstance());
+        Pair<Entity, NbtCompound> pair = dataSyncer.requestEntity(world, hopperMinecartEntity.getId());
+        if (pair != null && nbt!= pair.getRight()) {
+            this.nbt = pair.getRight();
         }
     }
 }

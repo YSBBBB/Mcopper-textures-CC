@@ -85,7 +85,6 @@ public class GuiConfigs extends GuiConfigsBase {
     }
 
     private record ButtonListener(ConfigGuiTab tab, GuiConfigs parent) implements IButtonActionListener {
-
         @Override
             public void actionPerformedWithButton(ButtonBase button, int mouseButton) {
                 GuiConfigs.tab = this.tab;
@@ -94,5 +93,4 @@ public class GuiConfigs extends GuiConfigsBase {
                 this.parent.initGui();
             }
         }
-
 }

@@ -11,10 +11,7 @@ public class WuTongUIPatch implements ModInitializer {
 
     @Override
     public void onInitialize() {
-
         InitHandler.getInstance().registerModHandlers();
-
         LOGGER.info("Hello Fabric world!");
     }
-
 }

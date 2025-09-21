@@ -23,7 +23,6 @@ public enum RenderShulkerboxColorMode implements IConfigOptionListEntry {
                 return mode;
             }
         }
-
         return RenderShulkerboxColorMode.NO;
     }
 
@@ -50,7 +49,6 @@ public enum RenderShulkerboxColorMode implements IConfigOptionListEntry {
                 id = values().length - 1;
             }
         }
-
         return values()[id % values().length];
     }
 
@@ -58,5 +56,4 @@ public enum RenderShulkerboxColorMode implements IConfigOptionListEntry {
     public RenderShulkerboxColorMode fromString(String name) {
         return fromStringStatic(name);
     }
-
 }

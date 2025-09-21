@@ -37,16 +37,12 @@ public class Configs implements IConfigHandler {
 
     public static void loadFromFile() {
         Path configFile = FileUtils.getConfigDirectoryAsPath().resolve(CONFIG_FILE_NAME);
-
         if (Files.exists(configFile) && Files.isReadable(configFile)) {
             JsonElement element = JsonUtils.parseJsonFileAsPath(configFile);
-
-            if (element != null && element.isJsonObject()) {
-                JsonObject root = element.getAsJsonObject();
-
-                ConfigUtils.readConfigBase(root, "Generic", Configs.Generic.OPTIONS);
-                ConfigUtils.readConfigBase(root, "Fixes", Configs.Fixes.OPTIONS);
-            }
+            if (element == null || !element.isJsonObject()) return;
+            JsonObject root = element.getAsJsonObject();
+            ConfigUtils.readConfigBase(root, "Generic", Configs.Generic.OPTIONS);
+            ConfigUtils.readConfigBase(root, "Fixes", Configs.Fixes.OPTIONS);
         } else {
             WuTongUIPatch.LOGGER.error("loadFromFile(): Failed to load config file '{}'.", configFile.toAbsolutePath());
         }
@@ -54,7 +50,6 @@ public class Configs implements IConfigHandler {
 
     public static void saveToFile() {
         Path dir = FileUtils.getConfigDirectoryAsPath();
-
         if (!Files.exists(dir)) {
             FileUtils.createDirectoriesIfMissing(dir);
         }
@@ -108,11 +103,13 @@ public class Configs implements IConfigHandler {
         public static final ConfigBoolean BARREL_FIXES = new ConfigBoolean("BarrelFixes", false, translate("BarrelFixes")).apply(Fixes_KEY);
         public static final ConfigBoolean PREVENT_PREVIEWING_OWN_BACKPACK = new ConfigBoolean("PreventPreviewingOwnBackpack", false, translate("PreventPreviewingOwnBackpack")).apply(Fixes_KEY);
         public static final ConfigBoolean HORSE_FIXES = new ConfigBoolean("HorseFixes", false, translate("HorseFixes")).apply(Fixes_KEY);
+        public static final ConfigBoolean JADE_TOOLTIP_FIXES = new ConfigBoolean("JadeTooltipFixes", false, translate("JadeTooltipFixes")).apply(Fixes_KEY);
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
                 PREVENT_PREVIEWING_OWN_BACKPACK,
                 INVENTORY_PREVIEW_FIX_MODE,
                 BARREL_FIXES,
-                HORSE_FIXES
+                HORSE_FIXES,
+                JADE_TOOLTIP_FIXES
         );
     }
 }

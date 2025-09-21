@@ -26,7 +26,6 @@ public enum InventoryPreviewFixMode implements IConfigOptionListEntry {
                 return mode;
             }
         }
-
         return InventoryPreviewFixMode.NO;
     }
 
@@ -44,21 +43,20 @@ public enum InventoryPreviewFixMode implements IConfigOptionListEntry {
     public IConfigOptionListEntry cycle(boolean forward) {
         int id = this.ordinal();
         if (forward) {
-            if (id == 1 && !isLoadedWuTongUI) {
+            if (id == 1 && !isLoadedWuTongUI()) {
                 id++;
             }
             if (++id >= values().length) {
                 id = 0;
             }
         } else {
-            if (id == 1 && !isLoadedWuTongUI) {
+            if (id == 1 && !isLoadedWuTongUI()) {
                 id--;
             }
             if (--id < 0) {
                 id = values().length - 1;
             }
         }
-
         return values()[id % values().length];
     }
 
@@ -66,5 +64,4 @@ public enum InventoryPreviewFixMode implements IConfigOptionListEntry {
     public InventoryPreviewFixMode fromString(String name) {
         return fromStringStatic(name);
     }
-
 }

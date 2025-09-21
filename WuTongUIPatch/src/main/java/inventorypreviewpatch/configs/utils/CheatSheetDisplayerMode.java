@@ -3,8 +3,6 @@ package inventorypreviewpatch.configs.utils;
 import fi.dy.masa.malilib.config.IConfigOptionListEntry;
 import fi.dy.masa.malilib.util.StringUtils;
 
-import static inventorypreviewpatch.event.ResourcesLoadedListener.isLoadedWuTongUI;
-
 public enum CheatSheetDisplayerMode implements IConfigOptionListEntry {
     NO             ("no", "inventorypreviewpatch.label.CheatSheetDisplayerMode.no"),
     ALL            ("all", "inventorypreviewpatch.label.CheatSheetDisplayerMode.all"),
@@ -26,7 +24,6 @@ public enum CheatSheetDisplayerMode implements IConfigOptionListEntry {
                 return mode;
             }
         }
-
         return CheatSheetDisplayerMode.NO;
     }
 
@@ -44,21 +41,14 @@ public enum CheatSheetDisplayerMode implements IConfigOptionListEntry {
     public IConfigOptionListEntry cycle(boolean forward) {
         int id = this.ordinal();
         if (forward) {
-            if (id == 1 && !isLoadedWuTongUI) {
-                id++;
-            }
             if (++id >= values().length) {
                 id = 0;
             }
         } else {
-            if (id == 1 && !isLoadedWuTongUI) {
-                id--;
-            }
             if (--id < 0) {
                 id = values().length - 1;
             }
         }
-
         return values()[id % values().length];
     }
 
