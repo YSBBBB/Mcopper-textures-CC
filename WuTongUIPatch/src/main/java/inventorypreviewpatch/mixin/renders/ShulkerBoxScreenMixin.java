@@ -32,7 +32,7 @@ public class ShulkerBoxScreenMixin {
     @Inject(method = "drawBackground", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILSOFT)
     private static void drawBackgroundWithColor(DrawContext context, float delta, int mouseX, int mouseY, CallbackInfo ci, int i, int j) {
         if (RENDER_SHULKERBOX_COLOR_MODE.getStringValue().equals("no")) return;
-        if (!(HitListener.getHitResult().be() instanceof ShulkerBoxBlockEntity sbbe)) return;
+        if (!(HitListener.getInstance().getHitResult().be() instanceof ShulkerBoxBlockEntity sbbe)) return;
         if (CACHE_BOX_COLOR != sbbe.getColor()) {
             CACHE_BOX_COLOR = sbbe.getColor();
             calculateColor(CACHE_BOX_COLOR);

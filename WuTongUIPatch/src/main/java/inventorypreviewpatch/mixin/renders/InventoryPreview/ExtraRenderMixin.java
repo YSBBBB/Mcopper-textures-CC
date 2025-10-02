@@ -111,7 +111,7 @@ public class ExtraRenderMixin {
                 if (previewData.inv() == null) return;
                 armourItems.add(horse.getEquippedStack(EquipmentSlot.BODY));
                 armourItems.add(horse instanceof LlamaEntity ? AIR : previewData.inv().getStack(0));
-                if (nbt.contains("ChestedHorse") && nbt.getBoolean("ChestedHorse")) {
+                if (horse instanceof AbstractDonkeyEntity donkey && donkey.hasChest()) {
                     armourItems.set(horse instanceof LlamaEntity ? 1 : 0, CHEST);
                 }
             } else {

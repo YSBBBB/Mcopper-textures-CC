@@ -1,12 +1,18 @@
 package inventorypreviewpatch;
 
+import inventorypreviewpatch.event.HitListener;
 import inventorypreviewpatch.helper.MethodExecuteHelper;
+import inventorypreviewpatch.mixin.Accessors;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.resource.featuretoggle.FeatureSet;
+import net.minecraft.screen.ScreenHandlerType;
 
 public class ModUtils {
 
@@ -23,10 +29,21 @@ public class ModUtils {
         return MethodExecuteHelper.getExecutionState("inventory_preview", timeoutMS);
     }
 
-    public static boolean isContainerScreen(Screen screen) {
+    public static boolean isBEScreen(Screen screen, PlayerEntity player) {
         boolean isContainerScreen = false;
-        if (screen instanceof HandledScreen<?>) {
-            isContainerScreen = !(screen instanceof CreativeInventoryScreen) && !(screen instanceof InventoryScreen);
+        if (screen instanceof HandledScreen<?> handledScreen) {
+            if (!(screen instanceof CreativeInventoryScreen) && !(screen instanceof InventoryScreen)) {
+                Inventory inv = HitListener.getInstance().getHitResult().inv();
+                if (inv!= null) {
+                    isContainerScreen = handledScreen.getScreenHandler().slots.size() - player.getInventory().main.size() == inv.size();
+                } else {
+                    ScreenHandlerType<?> type = ((Accessors.ScreenHandlerAccessor)handledScreen.getScreenHandler()).inventory_preview_fix$getType();
+                    ScreenHandlerType<?> typew = ScreenHandlerType.ANVIL;
+                    FeatureSet set = typew.getRequiredFeatures();
+                    System.out.println(set);
+                    isContainerScreen = type != null;
+                }
+            }
         }
         return isContainerScreen;
     }

@@ -100,7 +100,7 @@ public class CreeperForewarnOverlay {
                 y += 100;
             }
             renderCreeperForewarn(context, x, y);
-        } else if (ModUtils.isContainerScreen(screen) || screen instanceof InventoryScreen) {
+        } else if (ModUtils.isBEScreen(screen, mc.player) || screen instanceof InventoryScreen) {
             if (screen instanceof GenericContainerScreen screen2) {
                 int rows = screen2.getScreenHandler().getRows();
                 int backgroundHeight = 114 + rows * 18;

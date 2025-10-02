@@ -6,21 +6,13 @@ import fi.dy.masa.malilib.render.InventoryOverlay;
 import fi.dy.masa.malilib.render.RenderUtils;
 import inventorypreviewpatch.ModUtils;
 import inventorypreviewpatch.mixin.Accessors;
-import net.minecraft.block.AnvilBlock;
-import net.minecraft.block.Block;
 import net.minecraft.block.ShulkerBoxBlock;
-import net.minecraft.block.SmithingTableBlock;
 import net.minecraft.block.entity.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.vehicle.*;
 import net.minecraft.screen.PropertyDelegate;
-import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -32,10 +24,7 @@ import java.util.Map;
 import static fi.dy.masa.malilib.render.InventoryOverlay.*;
 import static fi.dy.masa.malilib.render.RenderUtils.color;
 import static fi.dy.masa.malilib.render.RenderUtils.getColorComponents;
-import static inventorypreviewpatch.ModUtils.isContainerScreen;
 import static inventorypreviewpatch.configs.Configs.Fixes.INVENTORY_PREVIEW_FIX_MODE;
-import static inventorypreviewpatch.event.ResourcesLoadedListener.isChinese;
-import static inventorypreviewpatch.event.ResourcesLoadedListener.isEN_US;
 import static inventorypreviewpatch.render.WuTongUIOverlayHandler.renderFrame;
 
 public class WuTongUIOverlay {
@@ -57,60 +46,6 @@ public class WuTongUIOverlay {
     private static final Identifier VANILLA_TEXTURE_HOPPER = Identifier.ofVanilla("textures/gui/container/fixed_hopper.png");
     private static final Identifier VANILLA_TEXTURE_SINGLE_CHEST = Identifier.ofVanilla("textures/gui/container/fixed_shulker_box.png");
 
-    public static <T> Text amendTitle(Screen screen, T containerEntity) {
-        Text title = Text.empty();
-        if (!isContainerScreen(screen)) return title;
-        boolean isLargeInventory = ((HandledScreen<?>) screen).getScreenHandler().slots.size() >= 54;
-        boolean useSpecificLanguage = isChinese() || isEN_US();
-        title = switch (containerEntity) {
-            case AnvilBlock ignore -> Text.translatable("block.minecraft.anvil");
-            case SmithingTableBlock ignore -> Text.translatable("block.minecraft.smithing_table");
-            case ChestBlockEntity ignore -> useSpecificLanguage ? Text.of((isLargeInventory ?
-                    (isChinese() ? "大型箱子" : "Large Chest")
-                    : (isChinese() ? "箱子" : "Chest")))
-                    : Text.translatable(isLargeInventory ? "container.chestDouble" : "container.chest");
-            case BarrelBlockEntity ignore -> Text.translatable(useSpecificLanguage
-                    ? (isLargeInventory
-                    ? "container.large.barrel"
-                    : "container.small.barrel")
-                    : "container.barrel");
-            case ChestMinecartEntity ignore -> Text.translatable(useSpecificLanguage ?
-                    isChinese() ? "运输矿车" : "Minecart with Chest"
-                    : "entity.minecraft.chest_minecart");
-            case HopperMinecartEntity ignore -> useSpecificLanguage ? Text.of(isChinese()
-                    ? "漏斗矿车" : "Minecart with Hopper")
-                    : Text.translatable("entity.minecraft.hopper_minecart");
-            case AbstractChestBoatEntity boatEntity -> switch (boatEntity) {
-                case ChestRaftEntity ignore -> useSpecificLanguage ? Text.of(isChinese()
-                        ? "筏载箱子"
-                        : "Chest on Bamboo Raft")
-                        : Text.translatable("entity.minecraft.bamboo_chest_raft");
-                case ChestBoatEntity ignore -> useSpecificLanguage ? Text.of(isChinese()
-                        ? "船载箱子"
-                        : "Chest on Boat")
-                        : Text.translatable("entity.minecraft.chest_boat");
-                default -> Text.empty();
-            };
-            case EnderChestBlockEntity ignore -> useSpecificLanguage ? Text.of(isChinese()
-                    ? "末影箱"
-                    : "Ender Chest")
-                    : Text.translatable("container.enderchest");
-            default -> {
-                if (containerEntity instanceof BlockEntity be) {
-                    Block block = be.getCachedState().getBlock();
-                    yield block.getName() != null ? block.getName() : block.asItem().getName();
-                } else if (containerEntity instanceof Entity entity) {
-                    yield entity.getName();
-                } else if (containerEntity instanceof Block block) {
-                    yield block.getName() != null ? block.getName() : block.asItem().getName();
-                } else {
-                    yield Text.empty();
-                }
-            }
-        };
-        return title;
-    }
-
     public static Map<String, int[]> getRender_correction() {
         return PreviewOverlay.render_correction;
     }
@@ -124,8 +59,8 @@ public class WuTongUIOverlay {
                     case "wutong" -> {
                         //原图用材质包里的
                         final DyeColor dye = block.getColor();
-                        yield dye == null?
-                                new float[] {1f, 1f, 1f, 1f} :
+                        yield dye == null ?
+                                new float[]{1f, 1f, 1f, 1f} :
                                 dye == DyeColor.BLACK ? new float[]{0.15f, 0.15f, 0.15f} : getColorComponents(dye.getEntityColor());
                         //太黑会糊成一坨,单独给它调一个
                     }
@@ -421,7 +356,7 @@ public class WuTongUIOverlay {
         }
 
         public static void renderFurnaceProgress(AbstractFurnaceBlockEntity furnace, int x, int y, BufferBuilder buffer) {
-            PropertyDelegate propertyDelegate = ((Accessors.AbstractFurnaceBlockEntityAccessor) furnace).inventory_preview_fix_getPropertyDelegate();
+            PropertyDelegate propertyDelegate = ((Accessors.AbstractFurnaceBlockEntityAccessor) furnace).inventory_preview_fix$getPropertyDelegate();
             boolean isBurning = propertyDelegate.get(0) > 0;
             int i = propertyDelegate.get(2);
             int j = propertyDelegate.get(3);
@@ -442,7 +377,7 @@ public class WuTongUIOverlay {
         }
 
         public static void renderBrewingStandProgress(BrewingStandBlockEntity brewingStand, int x, int y, BufferBuilder buffer) {
-            PropertyDelegate propertyDelegate = ((Accessors.BrewingStandBlockEntityAccessor) brewingStand).inventory_preview_fix_getPropertyDelegate();
+            PropertyDelegate propertyDelegate = ((Accessors.BrewingStandBlockEntityAccessor) brewingStand).inventory_preview_fix$getPropertyDelegate();
             int brewTime = propertyDelegate.get(0);
             int fuel = propertyDelegate.get(1);
 

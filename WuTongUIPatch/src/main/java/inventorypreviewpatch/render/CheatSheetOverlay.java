@@ -99,8 +99,8 @@ public class CheatSheetOverlay {
             }
             button1.setWidth(size[isTriggered(screen)? 2:0]);
             button1.setHeight(size[isTriggered(screen)? 3:1]);
-        }).size(size[isTriggered(screen)? 0:2], size[isTriggered(screen)? 1:3]).build();
-        ((Accessors.ScreenAccessor) screen).inventory_preview_fix_addSelectableChild(button);
+        }).size(size[isTriggered(screen)? 2:0], size[isTriggered(screen)? 3:1]).build();
+        ((Accessors.ScreenAccessor) screen).inventory_preview_fix$addSelectableChild(button);
     }
 
     public static void renderButton(DrawContext context, Screen screen) {
@@ -108,7 +108,7 @@ public class CheatSheetOverlay {
         int x = GuiUtils.getScaledWindowWidth() / 2 + button_position[0];
         int y = GuiUtils.getScaledWindowHeight() / 2 + button_position[1];
         if (screen instanceof AbstractFurnaceScreen<?> furnace) {
-            boolean book_isOpen = ((Accessors.RecipeBookScreenAccessor) furnace).inventory_preview_fix_getRecipeBook().isOpen();
+            boolean book_isOpen = ((Accessors.RecipeBookScreenAccessor) furnace).inventory_preview_fix$getRecipeBook().isOpen();
             if (CheatSheetOverlay.book_isOpen != book_isOpen) {
                 CheatSheetOverlay.book_isOpen = book_isOpen;
                 calculatePosition(screen);
@@ -119,7 +119,7 @@ public class CheatSheetOverlay {
         }
         if (!screen.children().contains(button)) {
             button.setPosition(x, y);
-            ((Accessors.ScreenAccessor) screen).inventory_preview_fix_addSelectableChild(button);
+            ((Accessors.ScreenAccessor) screen).inventory_preview_fix$addSelectableChild(button);
         }
         if (button.getX() != x || button.getY() != y) {
             button.setPosition(x, y);
