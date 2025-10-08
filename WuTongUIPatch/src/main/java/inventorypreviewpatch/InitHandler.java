@@ -5,10 +5,10 @@ import inventorypreviewpatch.configs.Configs;
 import inventorypreviewpatch.event.HitListener;
 import inventorypreviewpatch.event.ModRenderEventHandler;
 import inventorypreviewpatch.event.ResourcesLoadedListener;
+import inventorypreviewpatch.impl.TickExecutorImpl;
 import inventorypreviewpatch.interfaces.IRenderers;
 import inventorypreviewpatch.interfaces.ITickExecutor;
 import inventorypreviewpatch.render.RenderHandler;
-import inventorypreviewpatch.render.TickExecutor;
 
 public class InitHandler {
     private static final InitHandler INSTANCE = new InitHandler();
@@ -26,10 +26,9 @@ public class InitHandler {
 
         IRenderers modRenderer = new RenderHandler();
         RenderEventHandler.getInstance().registerGameOverlayRenderer(modRenderer);
-        ModRenderEventHandler.getInstance().registerRendererAfterScreenOverlay(modRenderer);
-        ModRenderEventHandler.getInstance().registerRendererBeforeScreenOverlay(modRenderer);
+        ModRenderEventHandler.getInstance().registerRenderer(modRenderer);
 
-        ITickExecutor executor = new TickExecutor();
+        ITickExecutor executor = new TickExecutorImpl();
         ModRenderEventHandler.getInstance().registerTickExecutor(executor);
     }
 }

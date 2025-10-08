@@ -12,7 +12,6 @@ import static inventorypreviewpatch.configs.Configs.Fixes.INVENTORY_PREVIEW_FIX_
 
 @Mixin(value = InventoryOverlay.class, priority = 500)
 public class DefaultRenderMixin {
-
     @Unique
     private static final Identifier VANILLA_TEXTURE_DISPENSER = Identifier.ofVanilla("textures/gui/container/fixed_dispenser.png");
     @Unique

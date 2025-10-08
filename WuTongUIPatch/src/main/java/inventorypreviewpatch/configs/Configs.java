@@ -15,7 +15,9 @@ import fi.dy.masa.malilib.util.JsonUtils;
 import fi.dy.masa.malilib.util.data.ModInfo;
 import inventorypreviewpatch.Reference;
 import inventorypreviewpatch.WuTongUIPatch;
-import inventorypreviewpatch.configs.utils.*;
+import inventorypreviewpatch.configs.utils.CheatSheetDisplayerMode;
+import inventorypreviewpatch.configs.utils.InventoryPreviewFixMode;
+import inventorypreviewpatch.configs.utils.RenderShulkerboxColorMode;
 import inventorypreviewpatch.gui.GuiConfigs;
 
 import java.nio.file.Files;
@@ -80,20 +82,18 @@ public class Configs implements IConfigHandler {
         public static final ConfigBoolean DISPLAY_TRAPPED_CHEST_TITLE = new ConfigBoolean("DisplayTrappedChestTitle", false, translate("DisplayTrappedChestTitle")).apply(GENERIC_KEY);
         public static final ConfigBoolean RENDER_LOCKED_HOPPER_MINECART = new ConfigBoolean("RenderLockedHopperMinecart", false, translate("RenderLockedHopperMinecart")).apply(GENERIC_KEY);
         public static final ConfigBoolean CREEPER_FOREWARN = new ConfigBoolean("CreeperForewarn", false, translate("CreeperForewarn")).apply(GENERIC_KEY);
-        public static final ConfigOptionList DISPLAY_CONTAINER_TITLE_MODE = new ConfigOptionList("DisplayContainerTitleMode", DisplayContainerTitleMode.VANILLA).apply(GENERIC_KEY);
-        public static final ConfigOptionList DISPLAY_PLAYER_INVENTORY_TITLE_MODE = new ConfigOptionList("DisplayPlayerInventoryTitleMode", DisplayPlayInventoryTitleMode.VANILLA).apply(GENERIC_KEY);
+        public static final ConfigBoolean BLANK_TITLE = new ConfigBoolean("BlankTitle", false, translate("BlankTitle")).apply(GENERIC_KEY);
         public static final ConfigOptionList RENDER_SHULKERBOX_COLOR_MODE = new ConfigOptionList("RenderShulkerboxColorMode", RenderShulkerboxColorMode.NO).apply(GENERIC_KEY);
         public static final ConfigOptionList USE_CHEAT_SHEET = new ConfigOptionList("CheatSheetDisplayerMode", CheatSheetDisplayerMode.BREWING_STAND, translate("CheatSheetDisplayerMode")).apply(GENERIC_KEY);
 
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
+                BLANK_TITLE,
                 USE_CHEAT_SHEET,
                 CREEPER_FOREWARN,
                 DISPLAY_FURNACE_PROGRESS,
                 DISPLAY_BREWING_STAND_PROGRESS,
                 DISPLAY_TRAPPED_CHEST_TITLE,
                 RENDER_LOCKED_HOPPER_MINECART,
-                DISPLAY_CONTAINER_TITLE_MODE,
-                DISPLAY_PLAYER_INVENTORY_TITLE_MODE,
                 RENDER_SHULKERBOX_COLOR_MODE
         );
     }
