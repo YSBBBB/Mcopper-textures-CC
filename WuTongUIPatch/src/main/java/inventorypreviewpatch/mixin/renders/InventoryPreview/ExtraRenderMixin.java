@@ -84,7 +84,6 @@ public class ExtraRenderMixin {
 
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     public void RenderAtHead(DrawContext drawContext, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        MethodExecuteHelper.startExecute("inventory_preview", -1);  //判断该方法是否正在执行
         ci.cancel();
         if (PREVENT_PREVIEWING_OWN_BACKPACK.getBooleanValue()
                 && (previewData.entity() != null && mc.player != null)
@@ -96,6 +95,7 @@ public class ExtraRenderMixin {
         World world = WorldUtils.getBestWorld(mc);
         boolean useWuTong = INVENTORY_PREVIEW_FIX_MODE.getStringValue().equals("wutong");
         if (previewData == null || world == null) return;
+        MethodExecuteHelper.startExecute("inventory_preview", -1);  //判断该方法是否正在执行
         final int xCenter = GuiUtils.getScaledWindowWidth() / 2;
         final int yCenter = GuiUtils.getScaledWindowHeight() / 2;
         int x = xCenter - 52 / 2;
@@ -106,12 +106,12 @@ public class ExtraRenderMixin {
         List<ItemStack> armourItems = new ArrayList<>();
         if (previewData.entity() instanceof AbstractHorseEntity horse) {
             if (HORSE_FIXES.getBooleanValue()) {
-                SimpleInventory inv = ((IMixinAbstractHorseEntity) horse).malilib_getHorseInventory();
+                Inventory inv = ((IMixinAbstractHorseEntity) horse).malilib_getHorseInventory();
                 this.previewData = new Context(previewData.type(), inv, previewData.be(), previewData.entity(), nbt, previewData.handler());
                 if (previewData.inv() == null) return;
                 armourItems.add(horse.getEquippedStack(EquipmentSlot.BODY));
                 armourItems.add(horse instanceof LlamaEntity ? AIR : previewData.inv().getStack(0));
-                if (nbt.contains("ChestedHorse") && nbt.getBoolean("ChestedHorse")) {
+                if (horse instanceof AbstractDonkeyEntity donkey && donkey.hasChest()) {
                     armourItems.set(horse instanceof LlamaEntity ? 1 : 0, CHEST);
                 }
             } else {

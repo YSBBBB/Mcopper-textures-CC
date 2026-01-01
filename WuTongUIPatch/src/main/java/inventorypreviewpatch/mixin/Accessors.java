@@ -23,39 +23,48 @@ public class Accessors {
     @Mixin(Screen.class)
     public interface ScreenAccessor {
         @Accessor("title")
-        void inventory_preview_fix_setTitle(Text newTitle);
+        void inventory_preview_fix$setTitle(Text newTitle);
 
         @Invoker("addSelectableChild")
-        <T extends Element & Selectable> T inventory_preview_fix_addSelectableChild(T child);
+        <T extends Element & Selectable> T inventory_preview_fix$addSelectableChild(T child);
     }
 
     @Mixin(HandledScreen.class)
     public interface HandledScreenAccessor {
-        @Accessor("playerInventoryTitle")
-        void inventory_preview_fix_setPlayerInventoryTitle(Text newTitle);
+        @Accessor("backgroundWidth")
+        int inventory_preview_fix$getBackgroundWidth();
+
+        @Accessor("backgroundHeight")
+        int inventory_preview_fix$getBackgroundHeight();
+
+        @Accessor("titleX")
+        void inventory_preview_fix$setTitleX(int newTitleX);
+
+        @Accessor("titleY")
+        void inventory_preview_fix$setTitleY(int newTitleY);
     }
 
     @Mixin(ScreenHandler.class)
     public interface ScreenHandlerAccessor {
         @Accessor("type")
-        ScreenHandlerType<?> inventory_preview_fix_getType();
+        ScreenHandlerType<?> inventory_preview_fix$getType();
     }
 
     @Mixin(AbstractFurnaceBlockEntity.class)
     public interface AbstractFurnaceBlockEntityAccessor {
         @Accessor("propertyDelegate")
-        PropertyDelegate inventory_preview_fix_getPropertyDelegate();
+        PropertyDelegate inventory_preview_fix$getPropertyDelegate();
     }
 
     @Mixin(BrewingStandBlockEntity.class)
     public interface BrewingStandBlockEntityAccessor {
         @Accessor("propertyDelegate")
-        PropertyDelegate inventory_preview_fix_getPropertyDelegate();
+        PropertyDelegate inventory_preview_fix$getPropertyDelegate();
     }
 
     @Mixin(RecipeBookScreen.class)
     public interface RecipeBookScreenAccessor {
         @Accessor("recipeBook")
-        RecipeBookWidget<?> inventory_preview_fix_getRecipeBook();
+        RecipeBookWidget<?> inventory_preview_fix$getRecipeBook();
     }
 }

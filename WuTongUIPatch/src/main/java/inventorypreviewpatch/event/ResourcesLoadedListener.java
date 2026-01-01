@@ -23,13 +23,13 @@ import static inventorypreviewpatch.configs.Configs.Fixes.INVENTORY_PREVIEW_FIX_
 public class ResourcesLoadedListener {
     private static final ResourcesLoadedListener INSTANCE = new ResourcesLoadedListener();
     private static final Identifier Mcopper_ID = Identifier.ofVanilla("textures/font/b100.png");
-    private static final Identifier WuTongUI_ID = net.minecraft.util.Identifier.ofVanilla("textures/font/b116.png");
+    private static final Identifier WuTongUI_ID = Identifier.ofVanilla("textures/font/b116.png");
     private static final Identifier DATA_CORRECTION = Identifier.of("inventorypreviewpatch", "textures/overlay/data_correction.json");
-
     private static boolean isLoadedWuTongUI;
     private static boolean isLoadedMcopper;
     private static boolean isChinese;
     private static boolean isEN_US;
+    private static boolean isWuTongMode;
 
     public static ResourcesLoadedListener getInstance() {
         return INSTANCE;
@@ -37,6 +37,10 @@ public class ResourcesLoadedListener {
 
     public static boolean isLoadedMcopper() {
         return isLoadedMcopper;
+    }
+
+    public static boolean isLoadedWuTongUI() {
+        return isLoadedWuTongUI;
     }
 
     public static boolean isChinese() {
@@ -47,14 +51,11 @@ public class ResourcesLoadedListener {
         return isEN_US;
     }
 
-    public static boolean isLoadedWuTongUI() {
-        return isLoadedWuTongUI;
-    }
-
-    private static void executor(MinecraftClient mc) {
+    private static void executeAtLoad(MinecraftClient mc) {
+        ResourceManager resourceManager = mc.getResourceManager();
         String language = mc.getLanguageManager().getLanguage();
-        isLoadedMcopper = mc.getResourceManager().getResource(Mcopper_ID).isPresent();
-        isLoadedWuTongUI = mc.getResourceManager().getResource(WuTongUI_ID).isPresent();
+        isLoadedMcopper = resourceManager.getResource(Mcopper_ID).isPresent();
+        isLoadedWuTongUI = resourceManager.getResource(WuTongUI_ID).isPresent();
         isChinese = (language.equals("zh_cn")) || (language.equals("zh_hk")) || (language.equals("zh_tw"));
         isEN_US = language.equals("en_us");
         updateConfigs();
@@ -63,7 +64,11 @@ public class ResourcesLoadedListener {
 
     private static void updateConfigs() {
         if (INVENTORY_PREVIEW_FIX_MODE.getStringValue().equals("wutong") && !isLoadedWuTongUI) {
+            isWuTongMode = true;
             INVENTORY_PREVIEW_FIX_MODE.setOptionListValue(InventoryPreviewFixMode.VANILLA);
+        } else if (isWuTongMode && isLoadedWuTongUI) {
+            isWuTongMode = false;
+            INVENTORY_PREVIEW_FIX_MODE.setOptionListValue(InventoryPreviewFixMode.WUTONG);
         }
     }
 
@@ -79,7 +84,7 @@ public class ResourcesLoadedListener {
             JsonObject object = element.getAsJsonObject();
 
             WuTongUIOverlay.PreviewOverlay.loadCustomMaterialParameters(object);
-            CheatSheetOverlay.loadChestButtonParameters(null);
+            CheatSheetOverlay.loadChestButtonParameters(object);
         } catch (IOException e) {
             WuTongUIPatch.LOGGER.error(String.valueOf(e));
         }
@@ -87,17 +92,17 @@ public class ResourcesLoadedListener {
 
     public void UpdateState() {
         ClientLifecycleEvents.CLIENT_STARTED.register((minecraftClient -> {
-            executor(minecraftClient);
+            executeAtLoad(minecraftClient);
             ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(
                     new SimpleSynchronousResourceReloadListener() {
                         @Override
                         public void reload(ResourceManager manager) {
-                            executor(minecraftClient);
+                            executeAtLoad(minecraftClient);
                         }
 
                         @Override
                         public Identifier getFabricId() {
-                            return null;
+                            return Identifier.of("inventory_preview_fix", "reload_resource");
                         }
                     }
             );
