@@ -27,38 +27,16 @@ public class ModRenderEventHandler {
         );
     }
 
-    /**
-     * 注册渲染器
-     */
-
     public static void registerRenderers() {
         EntityRendererRegistry.register(HOPPER_MINECART, HopperMinecartRenderer::new);
     }
 
-    /**
-     * 为{@link IRenderers#onRenderScreenOverlay}
-     * 方法注册一个渲染器
-     * 其在原版Screen渲染完成后调用
-     *
-     * @param renderer 渲染器实例
-     */
-
-    public void registerRendererAfterScreenOverlay(IRenderers renderer) {
+    public void registerRenderer(IRenderers renderer) {
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) ->
                 ScreenEvents.afterRender(screen).register((screen1, drawContext, mouseX, mouseY, tickDelta) ->
                         renderer.onRenderScreenOverlay(client, drawContext, mouseX, mouseY, tickDelta, scaledWidth, scaledHeight)
                 ));
-    }
-
-    /**
-     * 为{@link IRenderers#onRenderBeforeScreenOverlay}
-     * 方法注册一个渲染器
-     * 其在原版Screen渲染完成前调用
-     *
-     * @param renderer 渲染器实例
-     */
-
-    public void registerRendererBeforeScreenOverlay(IRenderers renderer) {
-        ScreenEvents.BEFORE_INIT.register(renderer::onRenderBeforeScreenOverlay);
+        ScreenEvents.BEFORE_INIT.register(renderer::beforeInit);
+        ScreenEvents.AFTER_INIT.register(renderer::AfterInit);
     }
 }

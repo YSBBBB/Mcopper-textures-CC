@@ -4,25 +4,25 @@ import fi.dy.masa.malilib.util.GuiUtils;
 import inventorypreviewpatch.ModUtils;
 import inventorypreviewpatch.event.HitListener;
 import inventorypreviewpatch.interfaces.IRenderers;
-import net.minecraft.block.Block;
-import net.minecraft.block.entity.BlockEntity;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.profiler.Profiler;
 
+@Environment(EnvType.CLIENT)
 public class RenderHandler implements IRenderers {
 
     @Override
-    public void onRenderBeforeScreenOverlay(MinecraftClient client, Screen screen, int scaledWidth, int scaledHeight) {
+    public void AfterInit(MinecraftClient client, Screen screen, int scaledWidth, int scaledHeight) {
         Screen currentscreen = client.currentScreen;
-        if (ModUtils.isContainerScreen(currentscreen)) {
-            BlockEntity be = HitListener.getHitResult().be();
-            Entity entity = HitListener.getHitResult().entity();
-            var containerEntity = ModUtils.getFirstNonNull(be, entity);
+        if (ModUtils.isBEScreen(currentscreen, client.player)) {
+            var containerEntity = ModUtils.getFirstNonNull(
+                    HitListener.getInstance().getHitResult().inv(),
+                    HitListener.getInstance().getHitResult().block()
+            );
             WuTongUIOverlayHandler.setTitle(currentscreen, containerEntity);
             CheatSheetOverlay.addCheatSheetButton(screen);
         }
@@ -33,12 +33,7 @@ public class RenderHandler implements IRenderers {
         Screen currentscreen = client.currentScreen;
         int x = scaledWidth / 2;
         int y = scaledHeight / 2;
-        if (ModUtils.isContainerScreen(currentscreen)) {
-            Block block = HitListener.getHitResult().block();
-            BlockEntity be = HitListener.getHitResult().be();
-            Entity entity = HitListener.getHitResult().entity();
-            var containerEntity = ModUtils.getFirstNonNull(be, entity, block);
-            WuTongUIOverlayHandler.drawTitle(drawContext, (HandledScreen<?>) currentscreen, containerEntity);
+        if (ModUtils.isBEScreen(currentscreen, client.player)) {
             CreeperForewarnOverlay.renderCreeperForewarn(currentscreen, drawContext, x, y, client);
             CheatSheetOverlay.renderCheatSheet(drawContext, currentscreen, x, y);
         } else if (currentscreen instanceof InventoryScreen) {

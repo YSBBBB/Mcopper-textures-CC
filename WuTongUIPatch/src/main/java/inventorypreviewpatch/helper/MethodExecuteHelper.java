@@ -48,7 +48,7 @@ public abstract class MethodExecuteHelper {
     /**
      * 记录方法最近一次被调用的时间
      *
-     * @param id
+     * @param id ()
      */
     private static void setLastCallTime(String id) {
         int shardIndex = getShardIndex(id);
@@ -59,8 +59,8 @@ public abstract class MethodExecuteHelper {
     /**
      * 记录方法执行的总次数
      *
-     * @param id
-     * @param threshold
+     * @param id ()
+     * @param threshold ()
      */
     private static void counterIncrease(String id, int threshold) {
         if (threshold <= 0) return;
@@ -73,7 +73,7 @@ public abstract class MethodExecuteHelper {
     }
 
     /**
-     * @param id
+     * @param id ()
      * @return 返回指定id的方法的使用次数
      */
     public static int getCounter(String id) {
@@ -84,7 +84,7 @@ public abstract class MethodExecuteHelper {
     /**
      * 用于获取指定id的方法是否正在被执行的布尔值
      *
-     * @param id
+     * @param id ()
      * @param timeoutMS 如果方法的使用间隔大于这个时间，则判断执行结束
      * @return 返回方法是否正在被执行的布尔值
      */
